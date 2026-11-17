@@ -166,10 +166,10 @@ const __TH = (() => {
     if (s > 0.35 && l >= 0.2 && l <= 0.89) {
       const deg = h * 360;
       if (deg >= 60 && deg <= 110) {
-        if (textish) return out(22, 133, 177, c.a < 0.5 ? Math.min(1, c.a * 1.6) : c.a);
-        if (prop.indexOf('border') === 0) return out(41, 175, 229, Math.min(1, c.a * 1.25));
-        if (prop === 'box-shadow' || prop === 'text-shadow') return out(41, 175, 229, c.a * 0.55);
-        return out(41, 175, 229, c.a);
+        if (textish) return out(14, 143, 132, c.a < 0.5 ? Math.min(1, c.a * 1.6) : c.a);
+        if (prop.indexOf('border') === 0) return out(46, 196, 182, Math.min(1, c.a * 1.25));
+        if (prop === 'box-shadow' || prop === 'text-shadow') return out(46, 196, 182, c.a * 0.55);
+        return out(46, 196, 182, c.a);
       }
       if (deg > 172 && deg <= 200 && textish) { const [r, g, b] = rgb(172 / 360, Math.min(s, 0.95), Math.min(l, 0.32)); return out(r, g, b, c.a < 0.5 ? Math.min(1, c.a * 1.6) : c.a); }
       if (textish) { const [r, g, b] = rgb(h, Math.min(s, 0.95), Math.min(l, 0.34)); return out(r, g, b, c.a < 0.5 ? Math.min(1, c.a * 1.6) : c.a); }
