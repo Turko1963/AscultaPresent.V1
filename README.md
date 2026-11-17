@@ -1,61 +1,58 @@
 # ASCULTA AI · Conversation Intelligence Hub
 
-Interactive design demo of the ASCULTA AI platform: every sales and retention call analyzed, agents coached like the best performer, and managers alerted the moment a conversation turns risky.
+Interactive design demo of the ASCULTA AI: a live call-center workspace for admins, team leads and agents, with real-time coaching from ASCULTA AI.
 
-Everything is static HTML. Open `index.html`, or the GitHub Pages link once Pages is on:
-**https://turko1963.github.io/AscultaPresent.V1/**
+Everything is static HTML. Open `index.html`, or the GitHub Pages link once Pages is on.
 
 ## Start here
 
 | Open | What it is |
 |---|---|
 | `index.html` | Landing page, the start of the demo |
-| `presentation.html` | Presentation for a PC or big screen. Every screen runs live inside the slides, with "Try it live" buttons |
+| `presentation.html` | Presentation for a PC or big screen (every screen runs live inside the slides) |
 | `presentation-mobile.html` | The same presentation for a phone |
-| `briefing.html` | ASCULTA's own executive briefing page, unchanged |
 
 ## Demo path
 
-Landing page → **Sign in** → choose a role → **Access platform**
+Landing page → **Login** → choose a role → **Access platform**
 
-- **Manager**: every screen, both desks, plus Pilot week.
-- **Team lead**: every screen except Pilot week.
-- **Agent**: only *My day*, *Live call* and *My calls*. Any other screen sends them back to *My day*.
+- **Admin**: every screen, every team.
+- **Team lead**: every screen except Billing. Monitoring shows only their team.
+- **Agent**: only *My day*, the live call screen and *My calls*, plus the dialer. Any other screen sends them back to *My day*.
 
 ## Screens
 
 | File | Screen | Who |
 |---|---|---|
-| `dashboard.html` | Dashboard with the ASCULTA brief, KPIs, coverage, agents, risks | Manager, team lead |
-| `live.html` | Live monitor: every call in progress, follow a call, whisper a tip | Manager, team lead |
-| `conversations.html` | All conversations (100% coverage), filters and search | Manager, team lead |
-| `call.html` | One conversation: waveform with markers, transcript, profile, coaching, risk | Manager, team lead |
-| `risks.html` | Risk alerts queue, review, mark handled, assign coaching | Manager, team lead |
-| `coaching.html` | Coaching playbook: techniques learned from top performers | Manager, team lead |
-| `agents.html` | Agents: scores, trends, the gap to the top three | Manager, team lead |
-| `customers.html` | Customer profiles and continuity, "before the next call" brief | Manager, team lead |
-| `pilot.html` | Free 1-week pilot: day-by-day progress, setup checklist, planner | Manager |
-| `agent-home.html` | *My day*: next customer with context, my coaching | Agent |
-| `agent-live.html` | Live call: coaching tips, compliance guard, live profile, auto wrap-up | Agent |
-| `agent-calls.html` | *My calls*: summary, tips, what went well, what to try next | Agent |
-| `login.html` | Sign in with role choice | Everyone |
+| `dashboard.html` | Dashboard with the ASCULTA AI brief | Admin, team lead |
+| `team-board.html` | Team board: every agent's numbers, listen / whisper / barge in | Admin, team lead |
+| `monitoring.html` | Monitoring: live status of all agents, long-idle alerts | Admin, team lead |
+| `command-view.html` | Command view: 3D call-center floor | Admin, team lead |
+| `live-calls.html` | Live calls | Admin, team lead |
+| `active-call.html` | One call in detail | Admin, team lead |
+| `analytics.html`, `history.html`, `agents.html`, `teams.html`, `targets.html`, `leads.html` | The rest of the menu | Admin, team lead |
+| `billing.html` | Billing | Admin |
+| `agent-home.html` | *My day*: the agent's home | Agent |
+| `agent-focus.html` | The agent's live call screen | Agent |
+| `agent-calls.html` | *My calls*: every call of the day with the ASCULTA AI brief, the tips given live, what was said, the recording and the next step | Agent |
+| `login.html` | Sign-in with role choice | Everyone |
 
 ## Things to try
 
-- **Ask ASCULTA** (top bar, or Ctrl/Cmd + K): ask "who needs coaching today?" or jump to any screen.
-- **Agent live call**: press *Start call*. A tip appears and ticks off as Maya follows it, the compliance guard steps in, and *End call* writes the wrap-up. *Save* puts the call at the top of *My calls*.
-- **Risk alerts**: handle an alert and the count updates on every screen.
-- **Light / Dark** button at the bottom of the menu.
-
-## Files
-
-- `assets/app.css`, `assets/app.js`, `assets/ui.js`: shared design system and app shell
-- `assets/data.js`: sample agents, calls, risks, techniques and customers
-- `assets/deck.js`: slide content shared by both presentations
-- `assets/asculta-sample-video.mp4`, `assets/ASCULTA_AI_CTO_Briefing.pptx`: the material ASCULTA sent
+- **▶ Agent call demo** (Dashboard top bar, or *Start calling* on *My day*): the dialer calls a client and connects, and the agent lands on their live call screen.
+- **DIALER** tab on the right edge: keypad, statuses (break, lunch, restroom, coaching, meeting, training…), mute, hold, transfer, ask coach, wrap-up.
+- **My calls** (agent menu, or *All my calls* on *My day*): pick a call to see its brief, tips and transcript. Calls you finish in the dialer show up at the top.
+- **☀ / ☾** button: switches between the dark and the light version.
 
 ## Notes
 
-- Customers are shown by reference only (for example C-48213).
-- Sign-in accepts anything: this is a design demo with no real accounts, and no data leaves the page.
-- Names and figures are sample data, based on ASCULTA's briefing.
+- Client phone numbers are never shown; agents see client references only (GDPR).
+- Sign-in accepts anything: this is a design demo, with no real accounts and no data leaving the page.
+- Numbers come from the team's screenshots; Leads, History and Billing prices are marked as sample data.
+- Colours, fonts and name follow ASCULTA's brand: navy, teal, Bricolage Grotesque, Lato and JetBrains Mono.
+
+## Also in this repo
+
+- `briefing.html`: ASCULTA's own executive briefing page, unchanged.
+- `assets/`: their sample video and CTO briefing deck.
+- `v1/`: the first ASCULTA-specific version (risk alerts, coaching playbook, customer profiles, pilot week).

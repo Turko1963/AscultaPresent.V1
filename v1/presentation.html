@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASCULTA AI · Presentation</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+html,body{height:100%;overflow:hidden;overflow:clip}
+body{background:#040C1C;color:#fff;background-image:none}
+.deck{position:fixed;inset:0;display:grid;place-items:center}
+.stage{width:min(100vw,calc(100vh*16/9));aspect-ratio:16/9;position:relative;container-type:inline-size;overflow:hidden;overflow:clip;background:radial-gradient(110% 80% at 80% 0%,#12305F 0%,#0B1E3F 50%,#07152E 100%)}
+.slide{position:absolute;inset:0;overflow:hidden;overflow:clip;padding:3.4cqw 4.6cqw 5.4cqw;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s,transform .45s;transform:translateY(1.2cqw)}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.k{font-family:var(--mono);font-size:.85cqw;letter-spacing:.2em;color:var(--teal);font-weight:700;text-transform:uppercase}
+.slide h1{font-size:7.4cqw;font-weight:800;letter-spacing:-.04em;line-height:.95;margin-top:1.4cqw}
+.slide h1 span{color:var(--teal);display:block}
+.slide h2{font-size:3.6cqw;letter-spacing:-.03em;line-height:1.02;margin-top:.8cqw}
+.slide h2 em{font-style:normal;color:var(--teal)}
+.lead{font-size:1.45cqw;color:#A9BAD6;max-width:52ch;margin-top:1.6cqw;line-height:1.5}
+.brand{display:flex;align-items:center;gap:.8cqw}
+.brand-mk{width:2.6cqw;height:2.6cqw;border-radius:.8cqw;background:var(--teal);color:#07152E;display:grid;place-items:center}
+.brand-mk svg{width:1.3cqw;height:1.3cqw}
+.brand-tx{font-weight:900;letter-spacing:.2em;font-size:1cqw}
+.brand-tx b{color:var(--teal)}
+/* cover */
+.cov{display:grid;grid-template-columns:1.2fr 1fr;gap:3cqw;align-items:center;flex:1}
+.orb{position:relative;aspect-ratio:1;width:80%;margin:auto}
+.orb .core{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3BE0D1,#0E8F84 55%,#0B3B5C);box-shadow:0 0 6cqw rgba(46,196,182,.45);display:grid;place-items:center}
+.orb .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(46,196,182,.3);animation:ring 4s linear infinite}
+.orb .ring:nth-child(2){inset:9%;animation-delay:-1.3s}.orb .ring:nth-child(3){inset:18%;animation-delay:-2.6s}
+@keyframes ring{0%{transform:scale(.86);opacity:0}30%{opacity:1}100%{transform:scale(1.08);opacity:0}}
+.cwave{display:flex;gap:.3cqw;align-items:center;height:30%;width:46%}
+.cwave i{flex:1;background:#07152E;border-radius:99px;height:calc(var(--h)*1%);animation:wv var(--d) ease-in-out infinite alternate}
+@keyframes wv{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+.meta{font-family:var(--mono);font-size:.8cqw;letter-spacing:.16em;color:#7488AB;margin-top:2.4cqw;display:flex;align-items:center;gap:.6cqw}
+/* idea */
+.prin{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1cqw;margin-top:2.6cqw}
+.pr{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1.2cqw;padding:1.6cqw}
+.pr small{font-family:var(--mono);font-size:.75cqw;letter-spacing:.16em;color:var(--teal)}
+.pr b{display:block;font-family:var(--display);font-size:1.8cqw;margin-top:.6cqw;line-height:1.1}
+.pr p{font-size:1cqw;color:#A9BAD6;margin-top:.6cqw;line-height:1.45}
+.sw{display:flex;gap:1cqw;margin-top:auto;align-items:flex-end}
+.sw div{display:flex;flex-direction:column;gap:.5cqw;font-family:var(--mono);font-size:.7cqw;letter-spacing:.12em;color:#7488AB}
+.sw i{width:6cqw;height:3.4cqw;border-radius:.8cqw;border:1px solid rgba(255,255,255,.12)}
+.ty{margin-left:auto;display:flex;gap:2cqw;align-items:baseline}
+/* journey */
+.jr{display:grid;grid-template-columns:repeat(7,1fr);gap:1cqw;margin-top:3cqw}
+.jn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1.1cqw;padding:1.2cqw;text-align:left;transition:background .2s,border-color .2s,transform .2s;color:#fff}
+.jn:hover{background:rgba(46,196,182,.12);border-color:var(--teal);transform:translateY(-.3cqw)}
+.jn span{font-family:var(--display);font-size:2.4cqw;font-weight:800;color:var(--teal);display:block;line-height:1}
+.jn b{display:block;font-size:1.15cqw;margin-top:.6cqw;font-family:var(--display)}
+.jn small{font-family:var(--mono);font-size:.65cqw;letter-spacing:.12em;color:#7488AB;text-transform:uppercase}
+/* screen slide */
+.sc{display:grid;grid-template-columns:minmax(0,2.55fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:2cqw;flex:1;min-height:0;margin-top:1.4cqw}
+.hd{display:flex;align-items:baseline;gap:1.4cqw}
+.hd h2{margin:0}
+.hd i{font-family:var(--display);font-style:normal;font-size:1.6cqw;color:#A9BAD6;font-weight:500}
+.frame{height:100%;border-radius:1cqw;overflow:hidden;background:#06122A;box-shadow:0 2cqw 5cqw rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1);display:flex;flex-direction:column;min-height:0}
+.fbar{display:flex;align-items:center;gap:.8cqw;padding:.55cqw .9cqw;border-bottom:1px solid rgba(255,255,255,.08);font-family:var(--mono);font-size:.68cqw;letter-spacing:.12em;color:#7488AB}
+.fbar .dot{width:.55cqw;height:.55cqw}
+.fbar button,.fbar a{font-family:var(--mono);font-size:.62cqw;letter-spacing:.12em;padding:.3cqw .7cqw;border-radius:99px;border:1px solid rgba(255,255,255,.14);color:#A9BAD6}
+.fbar button:hover,.fbar a:hover{color:#fff;border-color:#fff}
+.vp{flex:1;position:relative;overflow:hidden}
+.vp iframe{position:absolute;left:0;top:0;width:1440px;height:900px;border:0;transform-origin:0 0;background:#06122A}
+.side h5{font-family:var(--mono);font-size:.72cqw;letter-spacing:.16em;color:#7488AB;font-weight:700}
+.side ul{list-style:none;display:flex;flex-direction:column;gap:.9cqw;margin:.9cqw 0 1.8cqw}
+.side li{display:flex;gap:.7cqw;font-size:1.02cqw;line-height:1.45;color:#D6E0EF}
+.side li::before{content:"";width:.5cqw;height:.5cqw;border-radius:50%;background:var(--teal);flex:none;margin-top:.5cqw}
+.tries{display:flex;flex-direction:column;gap:.5cqw}
+.tries button{display:flex;align-items:center;justify-content:space-between;text-align:left;font-size:.95cqw;font-weight:700;padding:.75cqw 1cqw;border-radius:.7cqw;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:#fff;transition:background .15s,border-color .15s}
+.tries button:hover{background:rgba(46,196,182,.14);border-color:var(--teal)}
+.tries button::after{content:"→";color:var(--teal)}
+.tries button.done{border-color:var(--teal)}
+.who{display:inline-block;margin-top:.4cqw;font-family:var(--mono);font-size:.7cqw;letter-spacing:.14em;color:var(--teal);text-transform:uppercase}
+/* video */
+.vbox{flex:1;min-height:0;margin-top:1.6cqw;border-radius:1.2cqw;overflow:hidden;box-shadow:0 2cqw 5cqw rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1);background:#000;display:flex}
+.vbox video{width:100%;height:100%;object-fit:contain}
+/* corners */
+.grid9{display:grid;grid-template-columns:repeat(5,1fr);gap:.9cqw;margin-top:2.2cqw}
+.gc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1cqw;padding:1.1cqw;text-align:left;color:#fff;transition:border-color .2s,background .2s}
+.gc:hover{border-color:var(--teal);background:rgba(46,196,182,.1)}
+.gc b{display:block;font-family:var(--display);font-size:1.2cqw}
+.gc small{font-size:.8cqw;color:#A9BAD6}
+.nx{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2cqw;margin-top:2.6cqw}
+.nxc{background:#fff;color:var(--navy);border-radius:1.2cqw;padding:1.8cqw}
+.nxc small{font-family:var(--mono);font-size:.75cqw;letter-spacing:.14em;color:var(--teal-ink);font-weight:700}
+.nxc b{display:block;font-family:var(--display);font-size:1.9cqw;margin-top:.5cqw}
+.nxc p{font-size:1.05cqw;color:#4C5D7A;margin-top:.5cqw}
+.links{display:flex;gap:.8cqw;margin-top:auto}
+.links a{font-size:1cqw;padding:.9cqw 1.4cqw}
+/* controls */
+.ctl{position:absolute;left:50%;bottom:1.4cqw;transform:translateX(-50%);display:flex;align-items:center;gap:.7cqw;background:rgba(7,21,46,.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:.45cqw .6cqw;z-index:10}
+.ctl button{width:2.2cqw;height:2.2cqw;border-radius:50%;display:grid;place-items:center;color:#A9BAD6;font-size:1cqw}
+.ctl button:hover{color:#fff;background:rgba(255,255,255,.08)}
+.ctl .nxt{width:auto;padding:0 1.1cqw;border-radius:99px;background:var(--teal);color:#07152E;font-weight:900;font-size:.9cqw}
+.ctl .nxt:hover{background:var(--teal);color:#07152E}
+.dots{display:flex;gap:.35cqw}
+.dots i{width:.5cqw;height:.5cqw;border-radius:99px;background:rgba(255,255,255,.2);cursor:pointer;transition:width .2s,background .2s}
+.dots i.on{width:1.6cqw;background:var(--teal)}
+.cnt{font-family:var(--mono);font-size:.75cqw;color:#7488AB;min-width:4cqw;text-align:center}
+.prog{position:absolute;left:0;top:0;height:.25cqw;background:var(--teal);transition:width .4s;z-index:10}
+</style>
+</head>
+<body>
+<div class="deck"><div class="stage" id="stage"><i class="prog" id="prog"></i><div id="slides"></div>
+<div class="ctl"><button id="pv" aria-label="Previous">←</button><div class="dots" id="dots"></div><span class="cnt" id="cnt"></span><button class="nxt" id="nx">Next →</button><button id="th" aria-label="Light or dark screens" title="Light / dark screens">☀</button><button id="fs" aria-label="Full screen" title="Full screen">⤢</button></div></div></div>
+<script src="assets/deck.js"></script>
+<script>
+(()=>{const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const LOGO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></svg>';
+const brand=`<div class="brand"><span class="brand-mk">${LOGO}</span><span class="brand-tx">ASCULTA <b>AI</b></span></div>`;
+const S=DECK.screens;const sw=(c,l)=>`<div><i style="background:${c}"></i>${l}</div>`;
+let H=[];
+H.push({t:'Cover',h:`<div class="cov"><div>${brand}<h1 style="margin-top:3cqw">Every conversation,<span>heard.</span></h1><p class="lead">The ASCULTA AI conversation-intelligence hub: ${S.length} screens for managers, team leads and agents. Coaching from your best agents, every call covered, every risk caught in time.</p><div class="meta"><i class="dot pulse" style="width:.6cqw;height:.6cqw;background:var(--teal);border-radius:50%"></i>DESIGN REVIEW · NOVEMBER 2026 · EVERY SCREEN IN THIS DECK IS LIVE</div></div><div class="orb"><i class="ring"></i><i class="ring"></i><i class="ring"></i><div class="core"><div class="cwave">${[40,75,100,60,90,50,30].map((h,i)=>`<i style="--h:${h};--d:${.5+i*.09}s"></i>`).join('')}</div></div></div></div>`});
+H.push({t:'The idea',h:`<p class="k">The idea</p><h2>Listen to everything.<br><em>Show only what matters.</em></h2>
+ <div class="prin"><div class="pr"><small>CALM</small><b>Navy by default</b><p>Deep, quiet surfaces. Colour appears only when it carries a meaning.</p></div><div class="pr"><small>SIGNAL</small><b>Teal helps, red protects</b><p>Teal is coaching and progress. Red is risk, always, and nothing else.</p></div><div class="pr"><small>ANSWERS FIRST</small><b>One sentence, then detail</b><p>Every manager screen opens with the ASCULTA brief: what changed and what to do.</p></div><div class="pr"><small>COVERAGE</small><b>Every call, not a sample</b><p>Numbers come from all conversations. Each one links back to the moment it was said.</p></div></div>
+ <div class="sw">${sw('#0B1E3F','NAVY')}${sw('#2EC4B6','TEAL · COACHING')}${sw('#F0505A','RED · RISK')}${sw('#F4A63A','AMBER · OBJECTION')}${sw('#8B8CFF','VIOLET · PREFERENCE')}<div class="ty"><span style="font-family:var(--display);font-size:2.4cqw;font-weight:800">Bricolage</span><span style="font-size:1.6cqw">Lato interface</span><span style="font-family:var(--mono);font-size:1.1cqw;color:var(--teal);letter-spacing:.14em">JETBRAINS MONO</span></div></div>`});
+H.push({t:'The journey',h:`<p class="k">The journey</p><h2>From the first click<br><em>to the agent's next word.</em></h2><div class="jr">${S.map((s,i)=>`<button class="jn" data-go="${i+3}"><span>${String(i+1).padStart(2,'0')}</span><b>${s.n}</b><small>${s.who}</small></button>`).join('')}</div><p class="lead" style="margin-top:auto;font-size:1cqw;font-family:var(--mono);letter-spacing:.14em;color:#7488AB">CLICK ANY STEP TO JUMP STRAIGHT TO IT</p>`});
+S.forEach((s,i)=>H.push({t:s.n,scr:i,h:`<p class="k">${String(i+1).padStart(2,'0')} / ${S.length} · ${s.who}</p><div class="hd"><h2>${s.n}</h2><i>${s.tag}</i></div>
+ <div class="sc"><div class="frame"><div class="fbar"><i class="dot pulse" style="background:var(--teal);border-radius:50%"></i>ASCULTA AI · ${s.n.toUpperCase()} · LIVE DEMO<span style="margin-left:auto;display:flex;gap:.5cqw"><button data-reset>RESET</button><a href="${s.url}" target="_blank" rel="noopener">FULL SCREEN ↗</a></span></div><div class="vp"><iframe data-src="${s.url}" data-role="${s.role}" title="${s.n}" loading="lazy"></iframe></div></div>
+ <div class="side"><h5>WHAT'S NEW</h5><ul>${s.news.map(n=>`<li>${n}</li>`).join('')}</ul><h5>TRY IT LIVE</h5><div class="tries" style="margin-top:.9cqw">${s.tries.map(t=>`<button data-a="${t[1]}" data-v="${t[2]===undefined?'':t[2]}">${t[0]}</button>`).join('')}</div></div></div>`}));
+H.push({t:'Video',h:`<p class="k">The sample video</p><div class="hd"><h2>53 seconds, start to finish.</h2><i>Capture, coach, protect, act.</i></div><div class="vbox"><video src="assets/asculta-sample-video.mp4" poster="assets/video-poster.jpg" controls playsinline preload="metadata"></video></div>`});
+H.push({t:'Every corner',h:`<p class="k">Every corner</p><h2>${S.length} screens. <em>One listening product.</em></h2><div class="grid9">${S.map((s,i)=>`<button class="gc" data-go="${i+3}"><b>${s.n}</b><small>${s.tag}</small></button>`).join('')}<a class="gc" href="../briefing.html" target="_blank"><b>Executive briefing</b><small>Their interactive briefing page</small></a></div>`});
+H.push({t:"What's next",h:`<p class="k">What's next</p><h2>A free 1-week pilot<br><em>in your own call center.</em></h2><div class="nx"><div class="nxc"><small>DAY 1</small><b>Kick-off &amp; setup</b><p>Scope, teams, data access and security agreed with your technical team.</p></div><div class="nxc"><small>DAYS 2–6</small><b>Live analysis</b><p>ASCULTA AI analyzes your real sales and retention conversations.</p></div><div class="nxc"><small>DAY 7</small><b>Results review</b><p>Coaching insights, customer context and risk flags from your own calls. A clear decision point.</p></div></div>
+ <div class="links"><a class="btn pri" href="index.html" target="_blank">Open the live demo</a><a class="btn gh" style="color:#fff;border-color:rgba(255,255,255,.3)" href="../briefing.html" target="_blank">Executive briefing</a><a class="btn gh" style="color:#fff;border-color:rgba(255,255,255,.3)" href="assets/ASCULTA_AI_CTO_Briefing.pptx">CTO briefing (.pptx)</a></div>`});
+$('#slides').innerHTML=H.map((x,i)=>`<section class="slide" data-title="${x.t}" data-i="${i}">${x.h}</section>`).join('');
+const slides=$$('.slide');$('#dots').innerHTML=slides.map((_,i)=>`<i data-go="${i}" title="${H[i].t}"></i>`).join('');
+let cur=0,theme='dark';
+function fit(){$$('.vp').forEach(v=>{const f=$('iframe',v);const s=Math.min(v.clientWidth/1440,v.clientHeight/900);f.style.transform=`scale(${s})`;f.style.left=((v.clientWidth-1440*s)/2)+'px';f.style.top='0px'})}
+function load(i){const sl=slides[i];if(!sl)return;const f=$('iframe',sl);if(f&&!f.src){const u=f.dataset.src;f.src=u+(u.includes('?')?'&':'?')+(u.includes('role=')?'':'role='+f.dataset.role+'&')+'embed=1';f.onload=()=>{try{f.contentWindow.postMessage({asc:'theme',v:theme},'*')}catch(_){}}}}
+function go(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,j)=>s.classList.toggle('on',j===cur));$$('#dots i').forEach((d,j)=>d.classList.toggle('on',j===cur));
+ $('#cnt').textContent=String(cur+1).padStart(2,'0')+' / '+slides.length;$('#prog').style.width=((cur+1)/slides.length*100)+'%';load(cur);load(cur+1);setTimeout(fit,30);
+ $$('video').forEach(v=>{if(!slides[cur].contains(v))v.pause()});try{history.replaceState(null,'','#'+(cur+1))}catch(_){} }
+window.goTo=go;
+[document.documentElement,document.body,$('#stage'),...slides].forEach(el=>el.addEventListener('scroll',()=>{if(el.scrollTop||el.scrollLeft){el.scrollTop=0;el.scrollLeft=0}},{passive:true}));
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){go(+g.dataset.go);return}
+ const a=e.target.closest('[data-a]');if(a){const f=$('iframe',slides[cur]);f.contentWindow.postMessage({asc:a.dataset.a,v:a.dataset.v===''?undefined:a.dataset.v},'*');a.classList.add('done');return}
+ if(e.target.closest('[data-reset]')){const f=$('iframe',slides[cur]);f.contentWindow.postMessage({asc:'reset'},'*');$$('.tries button',slides[cur]).forEach(b=>b.classList.remove('done'))}});
+$('#pv').onclick=()=>go(cur-1);$('#nx').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}if(e.key==='Home')go(0);if(e.key==='End')go(slides.length-1);if(e.key==='f')$('#fs').click()});
+$('#fs').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(_){}};
+$('#th').onclick=()=>{theme=theme==='dark'?'light':'dark';$('#th').textContent=theme==='dark'?'☀':'☾';$$('iframe').forEach(f=>{if(f.src)f.contentWindow.postMessage({asc:'theme',v:theme},'*')})};
+addEventListener('resize',fit);document.addEventListener('fullscreenchange',()=>setTimeout(fit,80));
+try{const t=JSON.parse(localStorage.getItem('asc-theme'));if(t==='light'){theme='light';$('#th').textContent='☾'}}catch(_){}
+const h=parseInt(location.hash.slice(1));go(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>

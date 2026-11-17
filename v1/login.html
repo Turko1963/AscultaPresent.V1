@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+body{background:var(--navy-deep);color:#fff}
+.lg{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(380px,.8fr)}
+.vis{position:relative;overflow:hidden;padding:36px 48px;display:flex;flex-direction:column;background:radial-gradient(90% 70% at 30% 30%,#15346A 0%,#0B1E3F 55%,#07152E 100%)}
+.vis h1{font-size:clamp(44px,5.6vw,84px);letter-spacing:-.04em;line-height:.98;margin-top:auto}
+.vis h1 span{color:var(--teal);display:block}
+.vis p{color:#A9BAD6;font-size:18px;max-width:46ch;margin-top:18px}
+.flow{display:flex;align-items:center;gap:0;margin:44px 0 auto;max-width:560px}
+.nd{display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+.nd i{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#10274F;border:1px solid rgba(255,255,255,.1);color:#A9BAD6}
+.nd.ai i{width:96px;height:96px;background:radial-gradient(circle at 40% 35%,#3BE0D1,#0E8F84 60%,#0B3B5C);color:#07152E;box-shadow:0 0 60px rgba(46,196,182,.45)}
+.nd small{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#7488AB}
+.ln2{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--teal) 0 6px,transparent 6px 12px);position:relative;opacity:.7}
+.ln2::after{content:"";position:absolute;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--teal);animation:run 1.8s linear infinite}
+.ln2.b::after{animation-delay:.9s}
+.nd.ai .wave i{background:#07152E}
+@keyframes run{from{left:0;opacity:0}20%,80%{opacity:1}to{left:calc(100% - 10px);opacity:0}}
+.ok{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#7488AB;margin-top:36px}
+.form{background:#F3F7FB;color:var(--navy);padding:40px clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:center}
+.form h2{font-size:32px;margin-top:8px}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+.ro{border:2px solid #DCE5F0;background:#fff;border-radius:14px;padding:12px;text-align:left;transition:border-color .15s}
+.ro b{display:block;font-size:14.5px}
+.ro small{font-size:11.5px;color:#7A8AA5;line-height:1.3;display:block;margin-top:2px}
+.ro[aria-pressed=true]{border-color:var(--teal);box-shadow:0 0 0 4px #E1F6F3}
+.form label{display:block;font-weight:900;font-size:13px;color:#4C5D7A;margin-top:16px}
+.form .input{background:#fff;border-color:#DCE5F0;color:var(--navy);margin-top:6px}
+.form .btn.pri{width:100%;margin-top:22px;padding:15px;font-size:15px;letter-spacing:.06em}
+.sso{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sso button{border:1.5px solid #DCE5F0;background:#fff;border-radius:99px;padding:11px;font-weight:900;font-size:13.5px}
+.or{display:flex;align-items:center;gap:10px;color:#7A8AA5;font-size:12px;margin-top:18px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:#DCE5F0}
+@media(max-width:900px){.lg{grid-template-columns:1fr}.vis{min-height:420px;padding:28px}.flow{display:none}}
+</style>
+</head>
+<body>
+<div class="lg">
+  <section class="vis">
+    <a class="brand" href="index.html" style="padding:0"><span class="brand-mk" id="bm"></span><span class="brand-tx">ASCULTA <b>AI</b><small>CONVERSATION INTELLIGENCE</small></span></a>
+    <div class="flow"><div class="nd"><i id="i1"></i><small>CUSTOMER</small></div><div class="ln2"></div><div class="nd ai"><i><div class="wave" id="w" style="width:46px;height:30px"></div></i><small>ASCULTA AI</small></div><div class="ln2 b"></div><div class="nd"><i id="i2"></i><small>YOUR TEAM</small></div></div>
+    <h1>Welcome back.<span>Every call, heard.</span></h1>
+    <p>Sign in to see today's conversations, coaching and risk alerts, or step into an agent's live call.</p>
+    <div class="ok"><i class="dot pulse"></i>ALL SYSTEMS OPERATIONAL · 1,284 CONVERSATIONS ANALYZED TODAY</div>
+  </section>
+  <section class="form">
+    <p class="eyebrow" style="color:var(--teal-ink)">Sign in</p>
+    <h2>Sign in to ASCULTA AI</h2>
+    <div class="roles" id="roles">
+      <button class="ro" data-r="manager" aria-pressed="true"><b>Manager</b><small>Every desk, every screen</small></button>
+      <button class="ro" data-r="lead"><b>Team lead</b><small>Your desk, live coaching</small></button>
+      <button class="ro" data-r="agent"><b>Agent</b><small>Your day, your calls</small></button>
+    </div>
+    <form id="f" autocomplete="off">
+      <label>Work email<input class="input" id="em" type="email" value="noam.peretz@company.com"></label>
+      <label>Password<input class="input" type="password" value="demo-password"></label>
+      <button class="btn pri" type="submit">ACCESS PLATFORM</button>
+    </form>
+    <div class="or">or continue with</div>
+    <div class="sso"><button data-sso>Microsoft</button><button data-sso>Google</button></div>
+    <p class="note" style="margin-top:18px;color:#7A8AA5">Design demo: any details work. No data leaves this page.</p>
+  </section>
+</div>
+<script src="assets/data.js"></script><script src="assets/app.js"></script>
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;$('#bm').innerHTML=I.logo;$('#i1').innerHTML=I.phone.replace('<svg','<svg width="24" height="24"');$('#i2').innerHTML=I.agents.replace('<svg','<svg width="24" height="24"');X.wave($('#w'),7);
+const EM={manager:'noam.peretz@company.com',lead:'yael.benami@company.com',agent:'maya.cohen@company.com'};let r=X.role();
+function pick(v){r=v;$$('.ro').forEach(b=>b.setAttribute('aria-pressed',b.dataset.r===v));$('#em').value=EM[v]}
+$$('.ro').forEach(b=>b.onclick=()=>pick(b.dataset.r));pick(r);
+const go=()=>{X.store.set('asc-role',r);try{sessionStorage.removeItem('asc-live-risk')}catch(_){}location.href=r==='agent'?'agent-home.html':'dashboard.html'};
+$('#f').onsubmit=e=>{e.preventDefault();go()};$$('[data-sso]').forEach(b=>b.onclick=go);
+X.act('pickrole',v=>pick(v));X.act('go',go);
+})();
+</script>
+</body>
+</html>
