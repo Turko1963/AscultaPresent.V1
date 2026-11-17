@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My calls · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.mc{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;align-items:start}
+.mc .list .row{cursor:pointer;border:1.5px solid transparent}
+.mc .list .row.sel{background:var(--surf-2);border-color:var(--teal)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:8px;font-size:14.5px}
+.two li{display:flex;gap:8px}
+@media(max-width:1000px){.mc,.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="agent-calls" data-crumb="My calls">
+<main>
+<div class="page">
+  <div class="ph"><div><p class="eyebrow">Agent · Retention desk</p><h1>My calls</h1><p>Every call you made today, with the ASCULTA summary, the tips you got live and what to try next.</p></div></div>
+  <div class="mc">
+    <section class="card"><div class="seg" id="f" style="margin-bottom:10px"><button data-f="" aria-pressed="true">All</button><button data-f="Retained">Retained</button><button data-f="Follow-up">Follow-ups</button></div><div class="list" id="list"></div></section>
+    <div id="det" style="display:flex;flex-direction:column;gap:16px"></div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$}=X;const P=new URLSearchParams(location.search);
+const mine=X.store.get('asc-mycalls',[]).map((m,i)=>({id:'m'+i,fresh:1,cust:m.cust,when:'Today '+m.time,dur:m.dur,outcome:m.outcome,summary:m.summary,next:m.next,tips:m.tips.map(t=>({at:t[0],t:t[1],applied:t[2]})),profile:m.caps.filter(c=>c[0]!=='Agreed').reduce((o,c)=>(o[c[0]]=o[c[0]]?o[c[0]]+'; '+c[1]:c[1],o),{}),well:['Acknowledged the price change before anything else','Showed the actual costs, then one plan','Handled the price-promise question with approved wording'],next2:['Send the email before 11:00, the customer reads mornings'],lines:null}));
+const base=X.calls.filter(c=>c.agent==='maya').map(c=>({...c,well:['Named the fee objection back in the customer\'s words','Showed actual costs before the offer'],next2:['Confirm the follow-up channel out loud before ending the call']}));
+const extra=[{id:'x1',cust:'C-58140',when:'Today 10:41',dur:'05:10',outcome:'Converted',summary:'An upgrade call. You compared six months of costs on both plans; the customer upgraded on the call.',next:'Send the upgrade confirmation.',tips:[{at:'01:30',t:'Present one fitting offer, not a menu.',applied:true}],profile:{Need:'More data, same price',Preference:'SMS'},well:['One clear recommendation'],next2:['Ask for a referral when the customer is happy']},
+ {id:'x2',cust:'C-43990',when:'Today 08:52',dur:'09:15',outcome:'Follow-up',summary:'The customer wants to discuss the plan with their partner. Callback booked for tomorrow.',next:'Callback tomorrow 17:00, offer to email both.',tips:[{at:'07:40',t:'Offer to send the comparison to both decision makers.',applied:false}],profile:{Objection:'Needs partner\'s agreement',Preference:'Evening calls'},well:['Booked the next step on the call'],next2:['Offer to include the partner on the next call']}];
+const all=[...mine,...base,...extra];let sel=all.find(c=>c.id===P.get('id'))||all[0],f='';
+function list(){$('#list').innerHTML=all.filter(c=>!f||c.outcome===f).map(c=>`<div class="row ${c===sel?'sel':''}" data-i="${c.id}"><div><b>${c.cust}${c.fresh?' <span class="pill ok" style="margin-left:4px">Just now</span>':''}</b><small>${c.when} · ${c.dur}</small></div><span class="end">${X.outPill(c.outcome)}</span></div>`).join('');$$('#list .row').forEach(r=>r.onclick=()=>{sel=all.find(c=>c.id===r.dataset.i);list();det()})}
+function det(){const c=sel;$('#det').innerHTML=`<section class="card fade"><div class="card-h" style="margin:0"><div><p class="eyebrow">${c.when} · ${c.dur}</p><h2 style="font-size:30px;margin-top:4px">${c.cust}</h2></div><span class="r">${X.outPill(c.outcome)}</span></div></section>
+ <section class="brief fade"><span class="pill">ASCULTA summary</span><p style="font-size:16px;margin-top:10px;line-height:1.55">${c.summary}</p><p class="note" style="margin-top:10px"><b style="color:var(--tx)">Next step:</b> ${c.next}</p></section>
+ <div class="two fade"><section class="card"><span class="eyebrow">What went well</span><ul>${c.well.map(w=>`<li><i class="ck"></i>${w}</li>`).join('')}</ul></section><section class="card"><span class="eyebrow" style="color:var(--amber-tx)">Try next time</span><ul>${c.next2.map(w=>`<li><i class="ck" style="background:var(--amber)"></i>${w}</li>`).join('')}</ul></section></div>
+ <section class="card fade"><div class="card-h"><h3>Tips you got live</h3></div>${c.tips.map(t=>`<div class="row" style="padding:8px 0"><span class="mono faint" style="font-size:12px">${t.at}</span><div style="flex:1;font-size:14px">${t.t}</div>${t.applied?'<span class="pill ok">Applied</span>':'<span class="pill am">Missed</span>'}</div>`).join('')}</section>
+ <section class="card fade"><div class="card-h"><h3>Saved to the customer profile</h3></div><div style="display:flex;gap:6px;flex-wrap:wrap">${Object.entries(c.profile).map(([k,v])=>`<span class="pill gy" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:13px">${k}: ${v}</span>`).join('')}</div></section>
+ ${c.lines?`<section class="card fade"><div class="card-h"><h3>What was said</h3></div><div class="tx">${c.lines.map(l=>`<div class="ln ${l[1]==='a'?'ag':''}"><div class="who">${l[1]==='a'?'You':'Customer'}<time>${X.mmss(l[0])}</time></div><div class="bub">${X.marks(l[2])}</div></div>`).join('')}</div></section>`:''}`}
+$$('#f button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('#f button').forEach(x=>x.setAttribute('aria-pressed',x===b));list()});
+list();det();if(P.has('new')&&mine.length)X.toast({title:'Call saved',text:`${mine[0].cust} is at the top of your calls, with its summary.`});
+X.act('pick',v=>{sel=all[+v||0];list();det()});
+})();
+</script>
+</body>
+</html>

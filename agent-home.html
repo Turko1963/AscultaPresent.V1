@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My day · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.ah{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+.next{background:linear-gradient(150deg,var(--surf-3),var(--surf));border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+.next h2{font-size:34px}
+.ctxg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ctxg div{background:var(--surf-2);border-radius:12px;padding:12px 14px}
+.ctxg span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--tx-3);margin-bottom:4px}
+.ctxg b{font-size:14.5px}
+.cel{display:flex;gap:16px;align-items:center}
+.cel .ic{width:52px;height:52px;border-radius:16px;background:var(--teal);color:var(--navy-deep);display:grid;place-items:center;flex:none}
+.queue .row{padding:10px 6px}
+@media(max-width:1100px){.ah{grid-template-columns:1fr}.ctxg{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="agent-home" data-crumb="My day">
+<main>
+<div class="page">
+  <div class="ph"><div><p class="eyebrow" id="today"></p><h1>Good morning, Maya</h1><p>Your day so far, who to call next, and what to bring to the conversation.</p></div>
+    <div class="acts"><a class="btn gh" href="agent-calls.html">All my calls</a><a class="btn pri" href="agent-live.html" id="startB">${phone} Start next call</a></div></div>
+  <div class="grid g4" id="k"></div>
+  <div class="ah">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="next">
+        <div style="display:flex;gap:8px;align-items:center"><span class="pill">Next call</span><span class="pill am">Callback due 10:30</span><span class="mono faint" style="margin-left:auto;font-size:11px">FROM LAST WEEK'S CALL</span></div>
+        <div><h2>C-63390</h2><p class="muted">Retention · Customer since 2021 · 3 earlier conversations</p></div>
+        <div class="brief" style="padding:18px"><span class="pill">ASCULTA · before you dial</span><p style="font-size:16.5px;margin-top:8px;font-weight:700">Last time the customer said the new pricing doesn't work for them. They read email in the mornings. Open by acknowledging the price change, then show what they actually paid.</p></div>
+        <div class="ctxg"><div><span>OBJECTION</span><b>New pricing too high</b></div><div><span>PREFERENCE</span><b>Email, mornings</b></div><div><span>NEED</span><b>Lower monthly cost</b></div></div>
+        <div style="display:flex;gap:8px"><a class="btn pri" href="agent-live.html">${phone} Call C-63390</a><a class="btn gh" href="agent-calls.html">See last conversation</a></div>
+      </section>
+      <section class="card queue"><div class="card-h"><h3>Up next today</h3><small>Ordered by ASCULTA</small></div><div id="q"></div></section>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="card cel"><span class="ic">${coach}</span><div><b style="font-size:16px">Your technique is now team coaching</b><p class="muted" style="font-size:14px;margin-top:2px">"Show actual costs before the offer" came from your calls. 184 calls across the desk used it this week.</p></div></section>
+      <section class="card"><div class="card-h"><h3>My coaching</h3><small>This week</small></div>
+        <div class="row" style="padding:8px 0"><i class="ck"></i><div><b>Show actual costs first</b><small>Used on 96% of fee objections</small></div></div>
+        <div class="row" style="padding:8px 0"><i class="ck"></i><div><b>Name the objection back</b><small>94% · keep it up</small></div></div>
+        <div class="row" style="padding:8px 0"><span class="ck" style="background:var(--amber)"></span><div><b>Try next: confirm the follow-up channel</b><small>Learned from Noa · +0.7 pts on callbacks</small></div></div>
+        <div class="hr"></div><div class="card-h" style="margin:0"><h3 style="font-size:14px">Coaching score</h3><span class="r"><b class="mono" style="color:var(--accent-tx)">86 ↑</b></span></div><div id="sp"></div></section>
+      <section class="card"><div class="card-h"><h3>Recent calls</h3><span class="r"><a class="btn sm gh" href="agent-calls.html">All</a></span></div><div class="list" id="rc"></div></section>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;
+const s16=k=>I[k].replace('<svg','<svg width="16" height="16"');
+$$('main a.btn, main .ic').forEach(e=>e.innerHTML=e.innerHTML.replace('${phone}',s16('phone')).replace('${coach}',I.coach.replace('<svg','<svg width="24" height="24"')));
+$('#today').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short'}).toUpperCase()+' · RETENTION DESK';
+const mine=X.store.get('asc-mycalls',[]);
+$('#k').innerHTML=[['Calls today',41+mine.length,'3h 12m talk time'],['Conversion',`18.4%`,'Best on the desk'],['Tips applied','91%','Of tips received live'],['Customers retained',12+mine.filter(m=>m.outcome==='Retained').length,'+3 vs your average']].map(([l,v,s])=>`<div class="kpi"><label>${l}</label><strong class="num">${v}</strong><small>${s}</small></div>`).join('');
+$('#q').innerHTML=[['C-63390','Callback · new pricing objection','10:30','am'],['C-48213','Check-in after plan change · email first','11:15',''],['C-52276','New lead · web form, wants lower fees','11:40',''],['C-44019','Missed call · tried twice','12:00','rk']].map(q=>`<div class="row"><i class="dot ${q[3]==='am'?'a':q[3]==='rk'?'r':''}"></i><div><b>${q[0]}</b><small>${q[1]}</small></div><span class="end mono faint" style="font-size:12px">${q[2]}</span></div>`).join('');
+$('#sp').innerHTML=X.spark(X.A.maya.trend,{w:300,h:44});
+const rec=[...mine.map(m=>({cust:m.cust,when:'Today '+m.time,outcome:m.outcome,href:'agent-calls.html'})),...X.calls.filter(c=>c.agent==='maya').map(c=>({cust:c.cust,when:c.when,outcome:c.outcome,href:'agent-calls.html?id='+c.id})),{cust:'C-58140',when:'Today 10:41',outcome:'Converted',href:'agent-calls.html'},{cust:'C-43990',when:'Today 08:52',outcome:'Follow-up',href:'agent-calls.html'}].slice(0,4);
+$('#rc').innerHTML=rec.map(r=>`<a class="row" href="${r.href}"><div><b>${r.cust}</b><small>${r.when}</small></div><span class="end">${X.outPill(r.outcome)}</span></a>`).join('');
+X.act('start',()=>location.href='agent-live.html');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Risk alerts · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.rg{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+.rc{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;padding:16px;border-radius:16px;background:var(--surf);border:1px solid var(--line);cursor:pointer;transition:border-color .15s,transform .15s;border-left:4px solid var(--line-2)}
+.rc:hover{transform:translateY(-1px);border-color:var(--line-2)}
+.rc.High{border-left-color:var(--risk)}.rc.Medium{border-left-color:var(--amber)}.rc.Low{border-left-color:var(--tx-3)}
+.rc.done{opacity:.6;border-left-color:var(--teal)}
+.rc h4{font-size:17px}
+.rc .tag-q{margin-top:8px;font-size:13.5px}
+.wl .row{padding:10px 4px;border-radius:0;border-bottom:1px solid var(--line)}
+.wl .row:last-child{border:0}
+@media(max-width:1100px){.rg{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="risks" data-crumb="Risk alerts">
+<main>
+<div class="page">
+  <div class="ph"><div><p class="eyebrow">Real-time risk detection</p><h1>Risk alerts</h1><p>Red flags, compliance violations and misleading promises, flagged the moment they are said, so a manager can act before they become a financial, legal or reputational problem.</p></div>
+    <div class="acts"><div class="seg" id="st"><button data-s="open" aria-pressed="true">Open</button><button data-s="done">Handled</button><button data-s="all">All</button></div></div></div>
+  <div class="grid g4" id="k"></div>
+  <div class="rg">
+    <div style="display:flex;flex-direction:column;gap:10px" id="list"></div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="card wl"><div class="card-h"><h3>Policy watchlist</h3><small>Checked on every call</small></div><div id="wl"></div></section>
+      <section class="card flat"><div class="eyebrow" style="margin-bottom:6px">How an alert reaches you</div>
+        <div class="row" style="padding:8px 0"><i class="ck"></i><span><b>Detected in real time</b><small>While the agent is still on the call</small></span></div>
+        <div class="row" style="padding:8px 0"><i class="ck"></i><span><b>Flagged for review</b><small>With the exact moment and the words used</small></span></div>
+        <div class="row" style="padding:8px 0"><i class="ck"></i><span><b>Manager notified</b><small>On screen, by email or in Teams / Slack</small></span></div></section>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$}=X;let st='open';
+const WL=[['Guaranteed returns or "no risk" claims','High',2],['Risk disclaimer wording','High',1],['Fee and exit-fee disclosure','Medium',1],['High-pressure language','Medium',1],['Discounts outside policy','Low',1],['Personal data read aloud','High',0],['Customer asks to cancel, not offered retention','Low',0]];
+$('#wl').innerHTML=WL.map(w=>`<div class="row"><span style="flex:1;font-size:14px">${w[0]}</span><span class="end">${X.sevPill(w[1])}<b class="mono" style="width:22px;text-align:right">${w[2]}</b></span></div>`).join('');
+function draw(){const h=X.handled();const open=X.risks.filter(r=>!h.includes(r.id));
+ $('#k').innerHTML=[['Open alerts',open.length,'rk'],['High severity open',open.filter(r=>r.sev==='High').length,'rk'],['Handled today',h.length,''],['Avg. time to act','6 min','']].map(([l,v,c])=>`<div class="kpi ${c}"><label>${l}</label><strong class="num">${v}</strong><small>${l==='Avg. time to act'?'From alert to manager action':c?'Needs a manager':'With coaching assigned'}</small></div>`).join('');
+ const v=X.risks.filter(r=>st==='all'||(st==='open'?!h.includes(r.id):h.includes(r.id)));
+ $('#list').innerHTML=v.map(r=>{const a=X.A[r.agent],d=h.includes(r.id);return `<div class="rc ${r.sev} ${d?'done':''} fade" data-r="${r.id}">${X.av(a)}<div style="min-width:0"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h4>${r.title}</h4><span class="pill gy">${r.cat.split(' · ')[0]}</span></div><div class="note" style="margin-top:2px">${a.name} · ${a.desk} desk · ${X.C[r.call].cust} · at ${r.at} in the call · ${r.when}</div><div class="tag-q ${r.sev==='High'?'rk':''}">"${r.quote}"</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">${d?'<span class="pill ok">Handled</span>':X.sevPill(r.sev)}<span class="btn sm ${d?'gh':'pri'}">${d?'View':'Review'}</span></div></div>`}).join('')||`<div class="card empty">${st==='open'?'No open alerts. Every risk from today has been handled.':'Nothing here yet.'}</div>`;
+ $$('#list .rc').forEach(e=>e.onclick=()=>X.reviewRisk(e.dataset.r,draw))}
+$$('#st button').forEach(b=>b.onclick=()=>{st=b.dataset.s;$$('#st button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+draw();const q=new URLSearchParams(location.search).get('r');if(q)setTimeout(()=>X.reviewRisk(q,draw),300);
+X.act('open',v=>X.reviewRisk(v||'r1',draw));X.act('handle',()=>{const b=document.getElementById('rvHandle');if(b)b.click()});X.act('tab',v=>$(`#st [data-s="${v}"]`).click());X.act('close',()=>X.closeDrawer());
+})();
+</script>
+</body>
+</html>

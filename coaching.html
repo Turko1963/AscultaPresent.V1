@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coaching playbook · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--surf);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.steps4>div{padding:18px 20px;border-right:1px solid var(--line);position:relative}
+.steps4>div:last-child{border:0}
+.steps4 b{display:block;font-family:var(--display);font-size:17px;margin-top:6px}
+.steps4 p{font-size:13.5px;color:var(--tx-2);margin-top:4px}
+.steps4 .n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em}
+.cg{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start}
+.techs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.tc{display:flex;flex-direction:column;gap:12px}
+.tc h3{font-size:20px}
+.stat{display:flex;gap:20px}
+.stat div span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--tx-3)}
+.stat div b{font-family:var(--display);font-size:22px}
+.ad{display:grid;grid-template-columns:54px 1fr 34px;gap:10px;align-items:center;font-size:12.5px}
+.ad output{font-family:var(--mono);text-align:right;color:var(--tx-2)}
+.q .row{padding:10px 4px;border-radius:0;border-bottom:1px solid var(--line)}
+@media(max-width:1180px){.cg{grid-template-columns:1fr}}
+@media(max-width:760px){.techs{grid-template-columns:1fr}.steps4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body data-page="coaching" data-crumb="Coaching playbook">
+<main>
+<div class="page">
+  <div class="ph"><div><p class="eyebrow">Top-performer coaching</p><h1>Coaching playbook</h1><p>ASCULTA AI learns from your highest-revenue agents and turns their winning techniques into coaching tips for every agent, delivered during the call.</p></div>
+    <div class="acts"><div class="seg" id="dk"><button data-d="" aria-pressed="true">All desks</button><button data-d="Retention">Retention</button><button data-d="Sales">Sales</button></div></div></div>
+  <div class="steps4">
+    <div><span class="n">01</span><b>Find your best</b><p>Ranks agents by revenue and conversion from every call.</p></div>
+    <div><span class="n">02</span><b>Spot the difference</b><p>Finds what they say and do that others don't.</p></div>
+    <div><span class="n">03</span><b>Write the tip</b><p>Turns the pattern into one clear, actionable tip.</p></div>
+    <div><span class="n">04</span><b>Coach in the moment</b><p>Delivers it live when the same moment comes up.</p></div>
+  </div>
+  <div class="cg">
+    <div class="techs" id="techs"></div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="card q"><div class="card-h"><h3>Coaching queue</h3><small>This week</small></div><div id="queue"></div></section>
+      <section class="card flat"><div class="eyebrow" style="margin-bottom:6px">Tips delivered today</div><b style="font-family:var(--display);font-size:34px">312</b><p class="note">71% applied by the agent within the same call.</p>${spark}</section>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$}=X;let dk='';
+document.querySelector('.card.flat').innerHTML=document.querySelector('.card.flat').innerHTML.replace('${spark}',X.spark([4,9,14,22,25,31,28,34,41,38,44,22],{w:300,h:50}));
+const Q=[['tom','Use the approved risk wording','Assigned today','rk'],['lior','Use the approved risk wording','Assigned today','rk'],['dana','Show actual costs before the offer','In progress · 54%','am'],['eli','Book the next step on the call','In progress · 70%','am'],['shira','Show actual costs before the offer','In progress · 71%','am'],['noa','One offer, not three','Done','ok']];
+function queue(){$('#queue').innerHTML=Q.filter(q=>!dk||X.A[q[0]].desk===dk).map(q=>{const a=X.A[q[0]];return `<div class="row">${X.av(a)}<div style="min-width:0"><b>${a.name}</b><small>${q[1]}</small></div><span class="end"><span class="pill ${q[3]==='rk'?'rk':q[3]==='am'?'am':'ok'}">${q[2]}</span></span></div>`}).join('')}
+function techs(){$('#techs').innerHTML=X.techniques.filter(t=>!dk||t.desk===dk).map(t=>{const src=t.from==='policy'?'<span class="pill gy">Required by policy</span>':`<div style="display:flex;align-items:center;gap:8px">${X.av(X.A[t.from],'t')}<span class="note">Learned from <b style="color:var(--tx)">${X.A[t.from].name}</b></span></div>`;
+ return `<section class="card tc fade"><div style="display:flex;gap:6px">${t.isNew?'<span class="pill ok">New this week</span>':''}<span class="pill gy">${t.desk}</span></div><h3>${t.name}</h3>${src}<div class="tag-q">${t.quote}</div><p class="muted" style="font-size:13.5px">${t.why}</p>
+  <div class="stat"><div><span>${t.liftN?'CONVERSION LIFT':'TYPE'}</span><b style="color:${t.liftN?'var(--accent-tx)':'var(--risk-tx)'}">${t.liftN?t.lift:'Compliance'}</b></div><div><span>USED IN</span><b>${t.used} calls</b></div></div>
+  <div style="display:flex;flex-direction:column;gap:7px"><span class="mono faint" style="font-size:10px;letter-spacing:.12em">ADOPTION BY AGENT</span>${Object.entries(t.adopt).map(([k,v])=>`<div class="ad"><span>${X.A[k].name.split(' ')[0]}</span><div class="bar ${v<55?'rk':v<75?'lo':''}"><i style="width:0" data-w="${v}"></i></div><output>${v}%</output></div>`).join('')}</div>
+  <div style="display:flex;gap:8px;margin-top:auto;flex-wrap:wrap"><button class="btn sm pri" data-coach="${t.id}">Coach the ${t.desk.toLowerCase()} desk</button><a class="btn sm gh" href="call.html?id=${t.desk==='Sales'?(t.id==='t5'?'c2':'c8'):(t.id==='t3'?'c5':'c1')}">Hear an example</a></div></section>`}).join('');
+ setTimeout(()=>$$('#techs .bar i').forEach(i=>i.style.width=i.dataset.w+'%'),80);
+ $$('[data-coach]').forEach(b=>b.onclick=()=>{const t=X.techniques.find(x=>x.id===b.dataset.coach);b.innerHTML='✓ Coaching sent';b.disabled=true;X.toast({title:'Coaching sent',text:`"${t.name}" will be delivered live to every ${t.desk.toLowerCase()} agent from their next call.`})})}
+$$('#dk button').forEach(b=>b.onclick=()=>{dk=b.dataset.d;$$('#dk button').forEach(x=>x.setAttribute('aria-pressed',x===b));techs();queue()});
+techs();queue();
+X.act('desk',v=>$(`#dk [data-d="${v||''}"]`).click());X.act('coach',()=>{const b=document.querySelector('[data-coach]');b&&b.click()});
+})();
+</script>
+</body>
+</html>

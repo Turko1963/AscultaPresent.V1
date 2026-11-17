@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live monitor · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.lv{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:16px;align-items:start}
+.calls{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.lc{background:var(--surf);border:1.5px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s;text-align:left;display:flex;flex-direction:column;gap:10px;position:relative}
+.lc:hover{transform:translateY(-2px)}
+.lc.sel{border-color:var(--teal);box-shadow:0 0 0 4px var(--accent-bg)}
+.lc.rk{border-color:var(--risk);box-shadow:0 0 0 4px var(--risk-bg);animation:rkp 1.6s 3}
+@keyframes rkp{50%{box-shadow:0 0 0 9px rgba(240,80,90,.06)}}
+.lc-h{display:flex;align-items:center;gap:10px}
+.lc-h b{font-size:14px;display:block;line-height:1.2}
+.lc-h small{font-size:11.5px;color:var(--tx-3)}
+.lc-h time{margin-left:auto;font-family:var(--mono);font-size:12.5px;color:var(--tx-2)}
+.lc p{font-size:13.5px;color:var(--tx-2);min-height:40px;line-height:1.45}
+.panel{position:sticky;top:84px;display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 104px)}
+.panel .card{display:flex;flex-direction:column;min-height:0}
+.ptx{overflow-y:auto;max-height:44vh;padding-right:4px}
+.ctx{display:flex;flex-wrap:wrap;gap:6px}
+.ctx .pill{white-space:normal;text-transform:none;letter-spacing:0;font-family:var(--body);font-size:12.5px;padding:5px 10px}
+.whisper{display:flex;gap:8px;margin-top:12px}
+@media(max-width:1180px){.lv{grid-template-columns:1fr}.panel{position:static;max-height:none}}
+</style>
+</head>
+<body data-page="live" data-crumb="Live monitor">
+<main>
+<div class="page">
+  <div class="ph">
+    <div><p class="eyebrow">Live · every call is heard</p><h1>Live monitor</h1><p>Every conversation in progress, with what ASCULTA AI is hearing right now. Pick a call to follow it.</p></div>
+    <div class="acts"><div class="seg" id="flt"><button data-f="all" aria-pressed="true">All</button><button data-f="Retention">Retention</button><button data-f="Sales">Sales</button><button data-f="att">Needs attention</button></div></div>
+  </div>
+  <div class="grid g4">
+    <div class="kpi"><label>Calls in progress</label><strong class="num" id="kN">8</strong><small>8 of 8 analyzed live</small></div>
+    <div class="kpi"><label>Tips in flight</label><strong class="num" id="kT">3</strong><small>Delivered during calls</small></div>
+    <div class="kpi"><label>Context captured</label><strong class="num" id="kC">21</strong><small>Objections, needs, preferences</small></div>
+    <div class="kpi rk"><label>Live risk signals</label><strong class="num" id="kR">0</strong><small class="dn" id="kRs">None right now</small></div>
+  </div>
+  <div class="lv">
+    <div class="calls" id="calls"></div>
+    <div class="panel">
+      <section class="card" id="pc">
+        <div class="card-h"><span id="pAv"></span><div><h3 id="pName"></h3><small id="pSub"></small></div><span class="r"><span class="live-pill" style="padding:5px 10px"><i class="dot pulse"></i><span id="pClock">00:00</span></span></span></div>
+        <div class="wave" id="pWave" style="height:40px;margin-bottom:12px"></div>
+        <div class="tx ptx" id="pTx"></div>
+      </section>
+      <section class="card">
+        <div class="card-h"><h3>Captured on this call</h3><small>Saved to the profile</small></div>
+        <div class="ctx" id="pCtx"></div>
+        <div class="whisper"><input class="input" id="wIn" placeholder="Whisper a tip to the agent" value=""><button class="btn pri" id="wBtn">Send</button></div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm gh" id="lBtn">${live} Listen in</button><a class="btn sm gh" id="cBtn" href="customers.html">Customer profile</a></div>
+      </section>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;
+$('#lBtn').innerHTML=I.live.replace('<svg','<svg width="14" height="14"')+' Listen in';
+const SCRIPT={
+ maya:[['c','The [[new pricing doesn\'t work for me|obj]].'],['a','I hear you. [[Let me show you what you actually paid this year|tip]].'],['c','Okay, go ahead.'],['a','About 190 dollars. And [[one plan brings that to 130|tip]].'],['c','That\'s fair. [[Email it to me|pref]], please.']],
+ noa:[['a','[[Here is what you paid over the last year|tip]].'],['c','Hm, less than I thought.'],['a','And this is the one plan I\'d suggest.'],['c','[[I want something simpler|need]].']],
+ tom:[['a','Let me walk you through the options.'],['c','[[Which one is the safest?|obj]]'],['a','The balanced fund. It spreads the risk across markets.'],['c','[[Can you send me the brochure|pref]]?']],
+ eli:[['c','[[I\'m also talking to another company|int]].'],['a','Makes sense to compare. What matters most to you?'],['c','[[Lower fees, mostly|need]].'],['a','[[Shall I send you a side-by-side by email?|tip]]']],
+ shira:[['c','[[Email me, I don\'t pick up during work|pref]].'],['a','Of course. Mornings are fine for a short follow-up?'],['c','Yes, before nine.'],['a','Noted. I\'ll send it tonight.']],
+ lior:[['c','Hi, I saw your ad about the starter fund.'],['a','Great choice for a first investment.'],['c','[[I\'ve never invested before|obj]]. Is it safe?'],['a','Honestly, [[there\'s no risk at all with this one|rk]].'],['c','Oh, good. [[Send me the link on WhatsApp|pref]].']],
+ avi:[['c','Thursday at four works for me.'],['a','[[Booked. I\'ll call you Thursday at four|tip]].'],['c','And you\'ll check the discount?'],['a','Yes, I\'ll confirm what I can approve.']],
+ dana:[['c','[[I just want to pay less each month|need]].'],['a','Let\'s look at the basic plan together.'],['c','[[I don\'t use the extras anyway|obj]].'],['a','Before I switch you, here are the fee terms for the new plan.']]};
+const calls=X.live.map(l=>({...l,a:X.A[l.agent],t:l.start,i:0,shown:[],ctx:[],risk:false}));
+let sel=calls[0],flt='all';
+function card(c){const tg=c.risk?['Risk: no-risk claim','rk']:c.tag;return `<button class="lc ${c===sel?'sel':''} ${c.risk?'rk':''}" data-ag="${c.agent}">
+ <div class="lc-h">${X.av(c.a,c.a.top?'t':'')}<div><b>${c.a.name}</b><small>${c.desk} · ${c.cust}</small></div><time>${X.mmss(c.t)}</time></div>
+ <div class="wave ${c.risk?'rk':''}" style="height:26px"></div><p>${c.last||c.text}</p>
+ <div><span class="pill ${tg[1]==='rk'?'rk solid':tg[1]==='obj'?'am':tg[1]==='pref'?'vi':tg[1]==='lis'?'gy':''}">${tg[0]}</span></div></button>`}
+function grid(){const vis=calls.filter(c=>flt==='all'||(flt==='att'?(c.risk||c.a.low):c.desk===flt));$('#calls').innerHTML=vis.map(card).join('')||'<div class="empty">No calls match.</div>';
+ $$('#calls .wave').forEach(w=>X.wave(w,30));$$('#calls .lc').forEach(b=>b.onclick=()=>pick(calls.find(c=>c.agent===b.dataset.ag)))}
+function panel(){const c=sel;$('#pAv').innerHTML=X.av(c.a,c.a.top?'t':'');$('#pName').textContent=c.a.name;$('#pSub').textContent=`${c.desk} desk · ${c.cust}`;$('#pWave').className='wave'+(c.risk?' rk':'');X.wave($('#pWave'),56);
+ $('#pTx').innerHTML=c.shown.map(l=>line(l)).join('')||'<p class="note">Listening…</p>';$('#pTx').scrollTop=1e5;
+ $('#pCtx').innerHTML=c.ctx.map(k=>`<span class="pill ${k[1]==='rk'?'rk solid':k[1]==='obj'?'am':k[1]==='pref'?'vi':''}">${X.KIND[k[1]][0]}: ${k[0]}</span>`).join('')||'<span class="note">Nothing captured yet.</span>';
+ $('#wIn').value=c.agent==='lior'?'Use the approved wording: all investments carry risk.':c.desk==='Retention'?'Show the actual costs before the offer.':'Book the next step before you hang up.'}
+const line=l=>l[0]==='m'?`<div class="ln"><div class="who">You<time>${X.mmss(l[2])}</time></div><div class="bub" style="background:var(--accent-bg);color:var(--accent-tx)">Whisper to agent: ${l[1]}</div></div>`:`<div class="ln ${l[0]==='a'?'ag':''}"><div class="who">${l[0]==='a'?'Agent':'Customer'}<time>${X.mmss(l[2])}</time></div><div><div class="bub">${X.marks(l[1])}</div>${X.kinds(l[1]).length?`<div class="chips">${X.kinds(l[1]).map(k=>`<span class="pill ${k==='rk'?'rk solid':k==='obj'?'am':k==='pref'?'vi':''}">${X.KIND[k][0]}</span>`).join('')}</div>`:''}</div></div>`;
+function pick(c){sel=c;grid();panel()}
+function step(c){const s=SCRIPT[c.agent];const l=s[c.i%s.length];c.i++;const ln=[l[0],l[1],c.t];c.shown.push(ln);if(c.shown.length>12)c.shown.shift();
+ c.last=l[1].replace(/\[\[(.+?)\|\w+\]\]/g,'$1');
+ [...l[1].matchAll(/\[\[(.+?)\|(\w+)\]\]/g)].forEach(m=>{if(!c.ctx.some(k=>k[0]===m[1]))c.ctx.push([m[1].replace(/[.?]$/,''),m[2]]);
+   if(m[2]!=='rk')c.tag=[X.KIND[m[2]][0]+' '+(m[2]==='tip'?'':'captured'),m[2]];
+   if(m[2]==='rk'&&!c.risk){c.risk=true;$('#kR').textContent='1';$('#kRs').textContent='Lior Katz · no-risk claim';
+     X.toast({kind:'rk',icon:I.bell,title:'Risk detected · live',text:`${c.a.name}: "there's no risk at all with this one"`,actions:[['Follow the call',()=>pick(c)],['Open alert','risks.html?r=r4']]})}});
+ $('#kC').textContent=calls.reduce((n,c)=>n+c.ctx.length,14)}
+calls.forEach(c=>{const n=c.agent==='lior'?1:2+Math.floor(Math.random()*2),t0=c.t;for(let k=0;k<n;k++){c.t=Math.max(2,t0-(n-1-k)*14);step(c)}c.t=t0});
+$$('#flt button').forEach(b=>b.onclick=()=>{flt=b.dataset.f;$$('#flt button').forEach(x=>x.setAttribute('aria-pressed',x===b));grid()});
+const q=new URLSearchParams(location.search).get('a');if(q&&calls.find(c=>c.agent===q))sel=calls.find(c=>c.agent===q);
+grid();panel();
+let tick=0;setInterval(()=>{calls.forEach(c=>c.t++);tick++;$('#pClock').textContent=X.mmss(sel.t);$$('#calls .lc time').forEach((e,i)=>{const c=calls.find(x=>x.agent===e.closest('.lc').dataset.ag);e.textContent=X.mmss(c.t)});
+ if(tick%3===0){const c=tick===9?calls.find(x=>x.agent==='lior'):calls[Math.floor(Math.random()*calls.length)];if(c.agent==='lior'&&c.risk&&tick!==9)return;step(c);grid();if(c===sel)panel();$('#kT').textContent=3+Math.floor(tick/9)%3}},1000);
+$('#wBtn').onclick=()=>{const v=$('#wIn').value.trim();if(!v)return;sel.shown.push(['m',v,sel.t]);X.toast({title:'Tip whispered to '+sel.a.name.split(' ')[0],text:v});panel()};
+$('#lBtn').onclick=()=>X.toast({title:'Listening in',text:`You're on ${sel.a.name.split(' ')[0]}'s call, muted. The customer can't hear you.`});
+X.act('pick',v=>pick(calls.find(c=>c.agent===v)||calls[0]));X.act('risk',()=>{const c=calls.find(x=>x.agent==='lior');while(!c.risk)step(c);pick(c)});X.act('filter',v=>$(`#flt [data-f="${v}"]`).click());X.act('whisper',()=>$('#wBtn').click());
+})();
+</script>
+</body>
+</html>

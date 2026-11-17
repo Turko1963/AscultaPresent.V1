@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conversation · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.cg{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+.player{display:flex;align-items:center;gap:16px}
+.pbtn{width:48px;height:48px;border-radius:50%;background:var(--teal);color:var(--navy-deep);display:grid;place-items:center;flex:none}
+.pw{flex:1;position:relative;cursor:pointer;padding:14px 0}
+.pw .wave{height:44px}
+.pw .wave i{animation:none;opacity:.35}
+.pw .wave i.p{opacity:1}
+.mk{position:absolute;top:2px;width:3px;height:10px;border-radius:2px;transform:translateX(-1px)}
+.mk::after{content:"";position:absolute;left:-3px;top:-6px;width:9px;height:9px;border-radius:50%;background:inherit}
+.head{position:absolute;top:8px;bottom:8px;width:2px;background:var(--tx);border-radius:2px;pointer-events:none}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--tx-2);margin-top:4px}
+.leg span{display:flex;align-items:center;gap:6px}
+.leg i{width:8px;height:8px;border-radius:50%}
+.txc{max-height:62vh;overflow-y:auto;padding-right:6px}
+.prof .row{padding:9px 0;border-bottom:1px solid var(--line);border-radius:0}
+.prof .row:last-child{border:0}
+.prof em{font-style:normal;font-weight:900;color:var(--accent-tx);min-width:92px;font-size:13px}
+.ring{width:64px;height:64px;position:relative;flex:none}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:20px}
+@media(max-width:1100px){.cg{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="conversations" data-crumb="Conversation">
+<main>
+<div class="page">
+  <a href="conversations.html" class="note" style="display:inline-flex;gap:6px;align-items:center">← All conversations</a>
+  <div class="ph">
+    <div class="ring" id="ring"></div>
+    <div><p class="eyebrow" id="eye"></p><h1 id="title"></h1><p id="sub"></p></div>
+    <div class="acts"><button class="btn gh" id="bShare">Copy summary</button><button class="btn gh" id="bCoach">Assign coaching</button><button class="btn pri" id="bRev">Mark reviewed</button></div>
+  </div>
+  <section class="card">
+    <div class="player"><button class="pbtn" id="pp" aria-label="Play"></button><span class="mono" id="tm" style="font-size:13px;min-width:92px">00:00 / 00:00</span><div class="pw" id="pw"><div class="wave" id="wv"></div><i class="head" id="hd" style="left:0"></i></div></div>
+    <div class="leg"><span><i style="background:var(--amber)"></i>Objection</span><span><i style="background:var(--teal)"></i>Coaching tip</span><span><i style="background:var(--violet)"></i>Preference / need</span><span><i style="background:var(--risk)"></i>Risk</span><span class="faint" style="margin-left:auto">Click the waveform to jump. Playback is simulated in this demo.</span></div>
+  </section>
+  <div class="cg">
+    <section class="card"><div class="card-h"><h3>What was said</h3><small>Transcript · key moments</small></div><div class="tx txc" id="tx"></div></section>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <section class="brief"><span class="pill">ASCULTA summary</span><p style="margin-top:10px;font-size:15.5px;line-height:1.55" id="sum"></p></section>
+      <section class="card" id="riskC" style="display:none;border-color:var(--risk)"></section>
+      <section class="card prof"><div class="card-h"><h3>Customer profile</h3><small>Captured, saved for next time</small></div><div id="prof"></div></section>
+      <section class="card"><div class="card-h"><h3>Coaching moments</h3></div><div id="tips"></div></section>
+      <section class="card"><div class="card-h"><h3>Next best action</h3></div><p id="next" style="font-size:15px"></p><div class="hr"></div><div class="card-h" style="margin:0 0 6px"><h3 style="font-size:14px">Customer sentiment</h3><small style="margin-left:auto">Start → end</small></div><div id="sent"></div></section>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;const P=new URLSearchParams(location.search);
+const base=X.C[P.get('id')]||X.C.c1;const c={...base};const gen=P.has('ag');
+if(gen){c.cust=P.get('ref');c.agent=P.get('ag');c.when=P.get('at');c.outcome=P.get('o');c.score=+P.get('s');c.risk=null}
+const a=X.A[c.agent];
+const sub=s=>gen?s.replace(/\b(Maya|Noa|Shira|Dana|Avi|Eli|Lior|Tom)\b/g,a.name.split(' ')[0]):s;
+document.title=c.cust+' · ASCULTA AI';
+$('#eye').textContent=`${c.desk} desk · ${c.when}`;$('#title').textContent='Conversation with '+c.cust;
+$('#sub').innerHTML=`${a.name} · ${c.dur} · ${X.outPill(c.outcome)}`;
+const col=c.score<60?'var(--risk)':c.score>80?'var(--teal)':'var(--amber)';
+$('#ring').innerHTML=`<svg viewBox="0 0 36 36" width="64" height="64"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--surf-3)" stroke-width="3"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="${c.score} 100" transform="rotate(-90 18 18)"/></svg><b>${c.score}</b>`;
+$('#sum').textContent=sub(c.summary);$('#next').textContent=c.next;
+$('#prof').innerHTML=Object.entries(c.profile).map(([k,v])=>`<div class="row"><i class="ck"></i><em>${k}</em><span>${v}</span></div>`).join('');
+$('#tips').innerHTML=c.tips.map(t=>`<div class="row" style="padding:8px 0;align-items:flex-start"><span class="mono faint" style="font-size:12px;padding-top:2px">${t.at}</span><div style="flex:1"><b style="font-size:14px;font-weight:700">${t.t}</b><small>Delivered live · based on top-performer patterns</small></div>${t.applied?'<span class="pill ok">Applied</span>':'<span class="pill am">Not applied</span>'}</div>`).join('');
+$('#sent').innerHTML=X.spark(c.sentiment.map(v=>v+1),{w:400,h:50,color:c.sentiment[c.sentiment.length-1]<0?'var(--risk)':'var(--teal)'});
+if(c.risk){const r=X.risks.find(k=>k.id===c.risk);const rc=$('#riskC');rc.style.display='';
+ const draw=()=>{const h=X.handled().includes(r.id);rc.innerHTML=`<div class="card-h"><span style="color:var(--risk)">${I.bell}</span><h3>${r.title}</h3><span class="r">${h?'<span class="pill ok">Handled</span>':X.sevPill(r.sev)}</span></div><div class="tag-q rk">"${r.quote}"</div><p class="note" style="margin-top:8px">${r.cat} · flagged at ${r.at}. ${r.why}</p><button class="btn sm ${h?'gh':'rk'}" style="margin-top:12px" id="rvB">${h?'View review':'Review and act'}</button>`;$('#rvB').onclick=()=>X.reviewRisk(r.id,draw)};draw()}
+/* transcript + player */
+const L=c.lines.map(l=>({t:l[0],w:l[1],s:sub(l[2])}));const dur=c.sec;
+$('#tx').innerHTML=L.map((l,i)=>`<div class="ln ${l.w==='a'?'ag':''}" data-i="${i}" style="cursor:pointer"><div class="who">${l.w==='a'?a.name.split(' ')[0]:'Customer'}<time>${X.mmss(l.t)}</time></div><div><div class="bub">${X.marks(l.s)}</div>${X.kinds(l.s).length?`<div class="chips">${[...new Set(X.kinds(l.s))].map(k=>`<span class="pill ${k==='rk'?'rk solid':k==='obj'?'am':k==='pref'?'vi':''}">${X.KIND[k][0]}</span>`).join('')}</div>`:''}</div></div>`).join('');
+X.wave($('#wv'),110,true);const bars=$$('#wv i');
+L.forEach(l=>{const k=X.kinds(l.s);if(!k.length)return;const kk=k.includes('rk')?'rk':k.includes('tip')?'tip':k.includes('obj')?'obj':'pref';const m=document.createElement('i');m.className='mk';m.style.left=(l.t/dur*100)+'%';m.style.background={rk:'var(--risk)',tip:'var(--teal)',obj:'var(--amber)',pref:'var(--violet)'}[kk];$('#pw').append(m)});
+let t=0,pl=false,last=0;
+function render(){const p=t/dur;$('#hd').style.left=(p*100)+'%';bars.forEach((b,i)=>b.classList.toggle('p',i/bars.length<=p));$('#tm').textContent=X.mmss(t)+' / '+c.dur;
+ let cur=-1;L.forEach((l,i)=>{if(l.t<=t)cur=i});$$('#tx .ln').forEach((e,i)=>e.classList.toggle('on',i===cur));
+ if(cur>=0&&pl){const e=$$('#tx .ln')[cur];const box=$('#tx');if(e.offsetTop<box.scrollTop||e.offsetTop>box.scrollTop+box.clientHeight-60)box.scrollTop=e.offsetTop-box.offsetTop-20}}
+function setP(v){pl=v;$('#pp').innerHTML=v?I.pause:I.play;if(v){last=performance.now();requestAnimationFrame(loop)}}
+function loop(n){if(!pl)return;t+=(n-last)/1000*Math.max(6,dur/40);last=n;if(t>=dur){t=dur;setP(false)}render();if(pl)requestAnimationFrame(loop)}
+$('#pp').onclick=()=>{if(t>=dur)t=0;setP(!pl)};
+$('#pw').onclick=e=>{const r=$('#pw').getBoundingClientRect();t=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*dur;render()};
+$$('#tx .ln').forEach(e=>e.onclick=()=>{t=L[+e.dataset.i].t;render()});
+setP(false);render();
+$('#bRev').onclick=e=>{e.currentTarget.innerHTML=I.check+' Reviewed';X.toast({title:'Marked as reviewed',text:`${c.cust} · ${a.name}`})};
+$('#bCoach').onclick=()=>X.toast({title:'Coaching assigned',text:`${a.name.split(' ')[0]} will get this call as a coaching example.`});
+$('#bShare').onclick=()=>{const tx=`${c.cust} · ${a.name} · ${c.when}\n${sub(c.summary)}\nNext: ${c.next}`;try{navigator.clipboard.writeText(tx)}catch(_){}X.toast({title:'Summary copied',text:'Paste it into an email or CRM note.'})};
+X.act('play',()=>{t=0;setP(true)});X.act('jump',v=>{const l=L.find(l=>X.kinds(l.s).includes(v||'rk'))||L[0];t=l.t;render()});X.act('review',()=>$('#rvB')&&$('#rvB').click());
+})();
+</script>
+</body>
+</html>

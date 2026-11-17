@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilot week · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.day{background:var(--surf);border:1.5px solid var(--line);border-radius:14px;padding:12px;min-height:120px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;transition:border-color .15s}
+.day small{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--tx-3)}
+.day b{font-family:var(--display);font-size:15px;line-height:1.2}
+.day.done{background:var(--surf-2)}
+.day.done small{color:var(--accent)}
+.day.now{border-color:var(--teal);box-shadow:0 0 0 4px var(--accent-bg)}
+.day .bar{margin-top:auto}
+.pg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.chk .row{padding:10px 4px;border-radius:0;border-bottom:1px solid var(--line);cursor:pointer}
+.chk .row:last-child{border:0}
+.tg{width:22px;height:22px;border-radius:7px;border:2px solid var(--line-2);display:grid;place-items:center;flex:none;transition:background .15s,border-color .15s}
+.tg.on{background:var(--teal);border-color:var(--teal);color:var(--navy-deep)}
+#sched li{display:grid;grid-template-columns:150px 1fr;gap:4px 16px;padding:11px 0;border-bottom:1px solid var(--line);list-style:none}
+#sched time{font-family:var(--mono);font-size:12.5px;color:var(--accent-tx)}
+#sched small{grid-column:2;color:var(--tx-2);font-size:13px}
+@media(max-width:1100px){.pg{grid-template-columns:1fr}.days{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:600px){.days{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body data-page="pilot" data-crumb="Pilot week">
+<main>
+<div class="page">
+  <div class="ph"><div><p class="eyebrow">Next step</p><h1>Pilot week</h1><p>A free 1-week pilot in your own call center: insights from your own conversations, not a generic demo, with a clear decision point after day 7.</p></div>
+    <div class="acts"><span class="pill ok" style="font-size:12px;padding:7px 12px" id="dayPill">Day 4 of 7 · Live analysis</span></div></div>
+  <div class="days" id="days"></div>
+  <section class="card" id="dayD"></section>
+  <div class="grid g4" id="pk"></div>
+  <div class="pg">
+    <section class="card chk"><div class="card-h"><h3>Setup checklist</h3><small id="chkN"></small></div><div id="chk"></div></section>
+    <section class="card"><div class="card-h"><h3>Plan the next pilot</h3><small>For another site or team</small></div>
+      <div class="grid g2" style="gap:10px"><label class="note">Start date<input class="input" type="date" id="pD" style="margin-top:4px"></label><label class="note">Technical contact<input class="input" id="pW" placeholder="Name or email" style="margin-top:4px"></label></div>
+      <ol id="sched" style="margin-top:10px"></ol>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:14px"><button class="btn pri" id="pCopy">Copy pilot request</button><span class="note" id="pMsg"></span></div></section>
+  </div>
+  <section class="card"><div class="card-h"><h3>What your team gets</h3></div><div class="grid g4">
+    <div class="row" style="align-items:flex-start"><i class="ck"></i><span>Insights from your own conversations, not a generic demo</span></div>
+    <div class="row" style="align-items:flex-start"><i class="ck"></i><span>Real examples of coaching tips and risk alerts</span></div>
+    <div class="row" style="align-items:flex-start"><i class="ck"></i><span>A clear view of fit with your stack and security needs</span></div>
+    <div class="row" style="align-items:flex-start"><i class="ck"></i><span>Free of charge, with a clear decision point after day 7</span></div></div></section>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$}=X;const NOW=4;
+const DAYS=[['Kick-off & setup','Scope, teams, data access and security requirements agreed with your technical team.'],['Live analysis','Recordings connected. ASCULTA AI starts analyzing every sales and retention call.'],['Live analysis','First top-performer patterns found on the retention desk.'],['Live analysis','Coaching tips switched on for agents. First risk alerts reach managers.'],['Live analysis','Tips measured against conversion on your own calls.'],['Live analysis','Results pack prepared: coaching, customer context, risk.'],['Results review','Joint session on coaching insights, customer context and risk flags from your own calls. Decision point.']];
+let cur=NOW;
+function days(){$('#days').innerHTML=DAYS.map((d,i)=>`<button class="day ${i+1<NOW?'done':''} ${i+1===NOW?'now':''}" data-d="${i+1}" ${i+1===cur?'aria-pressed="true"':''}><small>DAY ${i+1}${i+1<NOW?' · DONE':i+1===NOW?' · TODAY':''}</small><b>${d[0]}</b><div class="bar"><i style="width:${i+1<NOW?100:i+1===NOW?55:0}%"></i></div></button>`).join('');
+ $$('.day').forEach(b=>b.onclick=()=>{cur=+b.dataset.d;det()});det()}
+function det(){const d=DAYS[cur-1];$('#dayD').innerHTML=`<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><span class="pill ${cur<NOW?'ok':cur===NOW?'':'gy'}">Day ${cur} · ${cur<NOW?'Done':cur===NOW?'In progress':'Coming up'}</span><p style="font-family:var(--display);font-size:20px;font-weight:700;flex:1;min-width:260px">${d[1]}</p>${cur===7?'<a class="btn pri" href="dashboard.html">Preview the results view</a>':''}</div>`;$$('.day').forEach(b=>b.style.borderColor=+b.dataset.d===cur&&cur!==NOW?'var(--line-2)':'')}
+days();
+$('#pk').innerHTML=[['Conversations analyzed','4,812','Days 2 to 4, 100% of calls'],['Coaching tips delivered','1,103','From your own top performers'],['Risk alerts raised','19','4 high severity, all handled'],['Customer profiles built','2,650','Ready before the next call']].map(([l,v,s])=>`<div class="kpi"><label>${l}</label><strong>${v}</strong><small>${s}</small></div>`).join('');
+const CK=[['Call recordings connected','Telephony export or SIP recording, read only',1],['Teams and desks in scope','Sales desk and retention desk',1],['Single sign-on for managers','Azure AD / Google Workspace',1],['Data retention policy set','Recordings kept 30 days in the pilot',1],['Security questionnaire signed off','Your InfoSec team',0],['Manager alert channel','Teams, Slack or email',0]];
+const ck=X.store.get('asc-pilot-ck',CK.map(c=>c[2]));
+function chk(){$('#chk').innerHTML=CK.map((c,i)=>`<div class="row" data-i="${i}"><span class="tg ${ck[i]?'on':''}">${ck[i]?X.I.check:''}</span><div><b>${c[0]}</b><small>${c[1]}</small></div></div>`).join('');$('#chkN').textContent=ck.filter(Boolean).length+' OF '+CK.length+' DONE';
+ $$('#chk .row').forEach(r=>r.onclick=()=>{const i=+r.dataset.i;ck[i]=ck[i]?0:1;X.store.set('asc-pilot-ck',ck);chk()})}
+chk();
+const pD=$('#pD'),pW=$('#pW');(function(){const d=new Date();d.setDate(d.getDate()+((8-d.getDay())%7||7));pD.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')})();
+const fd=d=>d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+function rows(){const v=pD.value;if(!v)return null;const [y,m,dd]=v.split('-').map(Number);const day=k=>new Date(y,m-1,dd+k);return [[fd(day(0)),'Kick-off & setup','Scope, teams, data access and security'],[fd(day(1))+' – '+fd(day(5)),'Live analysis','ASCULTA AI analyzes your real conversations'],[fd(day(6)),'Results review','Joint session and a clear decision point']]}
+function plan(){const r=rows();$('#sched').innerHTML=r?r.map(x=>`<li><time>${x[0]}</time><b>${x[1]}</b><small>${x[2]}</small></li>`).join(''):'<li><b>Choose a start date.</b></li>'}
+pD.oninput=plan;plan();
+$('#pCopy').onclick=()=>{const r=rows();if(!r)return;const tx=`ASCULTA AI free 1-week pilot request\nTechnical contact: ${pW.value.trim()||'(to be confirmed)'}\n\n`+r.map(x=>`${x[0]}: ${x[1]} - ${x[2]}`).join('\n');try{navigator.clipboard.writeText(tx).then(()=>$('#pMsg').textContent='Copied. Paste it into an email.',()=>$('#pMsg').textContent='Copy blocked by the browser.')}catch(_){}X.toast({title:'Pilot request ready',text:'Copied to your clipboard.'})};
+X.act('day',v=>{cur=+v||7;det()});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Customer profiles · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.cg{display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px;align-items:start}
+.cl .row{cursor:pointer;border:1.5px solid transparent}
+.cl .row.sel{background:var(--surf-2);border-color:var(--teal)}
+.pf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pf .card{padding:16px}
+.pf ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.pf li{font-size:14.5px;display:flex;gap:8px;align-items:center}
+.tl{position:relative;padding-left:22px;display:flex;flex-direction:column;gap:16px}
+.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line-2)}
+.tl>div{position:relative}
+.tl>div::before{content:"";position:absolute;left:-21px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--surf);border:2px solid var(--teal)}
+.tl>div:first-child::before{background:var(--teal)}
+@media(max-width:1100px){.cg{grid-template-columns:1fr}.pf{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="customers" data-crumb="Customer profiles">
+<main>
+<div class="page">
+  <div class="ph"><div><p class="eyebrow">Customer profiling &amp; continuity</p><h1>Customer profiles</h1><p>Needs, preferences, objections and history, captured from every conversation and surfaced before the next one. Customers are shown by reference only.</p></div></div>
+  <div class="cg">
+    <section class="card cl"><input class="input" id="q" placeholder="Search reference, need or objection" style="margin-bottom:10px"><div class="seg" id="fs" style="margin-bottom:10px"><button data-f="" aria-pressed="true">All</button><button data-f="At risk">At risk</button><button data-f="Warm">Warm</button><button data-f="Converted">Won</button></div><div class="list" id="list"></div></section>
+    <div id="det" style="display:flex;flex-direction:column;gap:16px"></div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$}=X;let sel=X.customers[0],f='';
+const stP=s=>`<span class="pill ${s==='At risk'?'rk':s==='Warm'?'am':s==='Converted'?'ok':''}">${s}</span>`;
+function list(){const q=$('#q').value.toLowerCase();const v=X.customers.filter(c=>(!f||c.status===f||(f==='Converted'&&c.status==='Retained'))&&(!q||(c.id+c.needs+c.objections+c.prefs).toLowerCase().includes(q)));
+ $('#list').innerHTML=v.map(c=>`<div class="row ${c===sel?'sel':''}" data-c="${c.id}"><div><b>${c.id}</b><small>${c.last} · ${c.objections[0]}</small></div><span class="end">${stP(c.status)}</span></div>`).join('')||'<div class="empty">No profiles match.</div>';
+ $$('#list .row').forEach(e=>e.onclick=()=>{sel=X.customers.find(c=>c.id===e.dataset.c);list();det()})}
+function det(){const c=sel;$('#det').innerHTML=`<section class="card fade"><div class="card-h" style="margin:0"><div><p class="eyebrow">${c.since==='New lead'||c.since==='Today'?'New lead':'Customer since '+c.since}</p><h2 style="font-size:30px;margin-top:4px">${c.id}</h2></div><span class="r">${stP(c.status)}</span></div>
+ <div style="display:flex;gap:24px;margin-top:12px;flex-wrap:wrap"><div><div class="mono faint" style="font-size:10.5px">VALUE</div><b>${c.value}</b></div><div><div class="mono faint" style="font-size:10.5px">CONVERSATIONS</div><b>${c.calls}</b></div><div><div class="mono faint" style="font-size:10.5px">LAST CONTACT</div><b>${c.last}</b></div></div></section>
+ <section class="brief fade"><span class="pill">Before the next call</span><p class="lead" style="font-size:20px">${c.brief}</p><div class="acts"><button class="btn pri" id="sendB">Send to the next agent</button><button class="btn gh" id="cbB">Book a callback</button></div></section>
+ <div class="pf fade"><section class="card"><span class="eyebrow">Needs</span><ul>${c.needs.map(x=>`<li><i class="ck"></i>${x}</li>`).join('')}</ul></section><section class="card"><span class="eyebrow">Preferences</span><ul>${c.prefs.map(x=>`<li><i class="ck" style="background:var(--violet)"></i>${x}</li>`).join('')}</ul></section><section class="card"><span class="eyebrow">Objections</span><ul>${c.objections.map(x=>`<li><i class="ck" style="background:var(--amber)"></i>${x}</li>`).join('')}</ul></section></div>
+ <section class="card fade"><div class="card-h"><h3>Conversation history</h3><small>Across every agent</small></div><div class="tl">${c.history.map(h=>`<div><div class="mono faint" style="font-size:11px">${h[0].toUpperCase()} · ${h[1].toUpperCase()}</div><p style="font-size:14.5px;margin-top:2px">${h[2]}</p>${h[3]?`<a class="btn sm gh" style="margin-top:8px" href="call.html?id=${h[3]}">Open conversation</a>`:''}</div>`).join('')}</div></section>`;
+ $('#sendB').onclick=()=>X.toast({title:'Brief sent',text:`The next agent who talks to ${c.id} sees this before the call connects.`});$('#cbB').onclick=()=>X.toast({title:'Callback booked',text:`${c.id} · ${c.prefs.find(p=>/\d|Morning|Tomorrow/.test(p))||'tomorrow 10:00'}`})}
+$('#q').oninput=list;$$('#fs button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('#fs button').forEach(x=>x.setAttribute('aria-pressed',x===b));list()});
+const q=new URLSearchParams(location.search).get('c');if(q)sel=X.customers.find(c=>c.id===q)||sel;list();det();
+X.act('pick',v=>{sel=X.customers.find(c=>c.id===v)||X.customers[1];list();det()});X.act('filter',v=>$(`#fs [data-f="${v||''}"]`).click());
+})();
+</script>
+</body>
+</html>

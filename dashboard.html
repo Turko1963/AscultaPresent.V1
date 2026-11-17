@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.top-g{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px}
+.livec{display:flex;flex-direction:column}
+.livec .big{font-family:var(--display);font-size:54px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.feed{display:flex;flex-direction:column;gap:6px;margin-top:12px;min-height:150px}
+.feed .row{padding:8px 10px;background:var(--surf-2);animation:fadeup .4s both}
+.mid-g{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
+.low-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,.85fr);gap:16px}
+.agr{display:grid;grid-template-columns:110px 1fr 34px;gap:12px;align-items:center;padding:7px 6px;border-radius:10px;cursor:pointer}
+.agr:hover{background:var(--surf-2)}
+.agr b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agr output{font-family:var(--mono);font-size:12.5px;text-align:right}
+.dots{display:grid;grid-template-columns:repeat(30,1fr);gap:4px;margin:12px 0}
+.dots i{aspect-ratio:1;border-radius:50%;background:var(--surf-3);transition:background .3s}
+.dots i.s{background:var(--tx-2)}
+.dots.ai i{background:var(--teal)}
+.dots.ai i.rk,.dots i.rk.s{background:var(--risk)}
+.tech{background:linear-gradient(160deg,var(--surf-3),var(--surf));}
+.tech h3{font-size:22px;margin-top:10px}
+@media(max-width:1100px){.top-g,.mid-g,.low-g{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="dashboard" data-crumb="Dashboard">
+<main>
+<div class="page">
+  <div class="ph">
+    <div><p class="eyebrow" id="today"></p><h1>Good morning, Noam</h1><p>Here is what ASCULTA AI heard across every sales and retention conversation.</p></div>
+    <div class="acts"><div class="seg" id="range"><button data-r="today" aria-pressed="true">Today</button><button data-r="7d">7 days</button><button data-r="30d">30 days</button></div></div>
+  </div>
+
+  <div class="top-g">
+    <section class="brief" style="display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:8px"><span class="pill">ASCULTA brief</span><span class="note mono" id="briefWhen">TODAY · 14:05</span></div>
+      <p class="lead" id="briefTx"><em>1,284 conversations</em> analyzed, all of them. Retention conversion is <em>up 2.1 points</em> since Maya's technique was coached to the desk. <u>One high-severity risk</u> on the sales desk needs you now.</p>
+      <div class="acts"><button class="btn pri" id="bReview">Review the high-risk call</button><a class="btn gh" href="coaching.html">See what's working</a><button class="btn gh" onclick="ASC.palette(true)">Ask a follow-up</button></div>
+      <div class="grid g3" style="margin-top:auto;padding-top:22px;gap:10px">
+        <div class="card flat" style="padding:12px 14px"><div class="mono faint" style="font-size:10px;letter-spacing:.12em">WHO TO COACH</div><b>Tom &amp; Lior</b><div class="note">Risk wording</div></div>
+        <div class="card flat" style="padding:12px 14px"><div class="mono faint" style="font-size:10px;letter-spacing:.12em">WHAT'S WORKING</div><b>Actual costs first</b><div class="note">+2.1 pts on retention</div></div>
+        <div class="card flat" style="padding:12px 14px"><div class="mono faint" style="font-size:10px;letter-spacing:.12em">TIME TO ACT</div><b>6 min</b><div class="note">Average, alert to manager action</div></div>
+      </div>
+    </section>
+    <section class="card livec">
+      <div class="card-h"><i class="dot pulse"></i><h3>Live now</h3><span class="r"><a class="btn sm gh" href="live.html">Live monitor ${arrow}</a></span></div>
+      <div style="display:flex;align-items:flex-end;gap:14px"><span class="big num" id="liveN">18</span><span class="muted" style="padding-bottom:6px">calls in progress<br><b style="color:var(--tx)" id="liveSub">8 retention · 10 sales</b></span></div>
+      <div class="wave" id="liveWave" style="margin-top:12px"></div>
+      <div class="feed" id="feed"></div>
+    </section>
+  </div>
+
+  <div class="grid g5" id="kpis"></div>
+
+  <div class="mid-g">
+    <section class="card"><div class="card-h"><h3>Conversion rate</h3><small id="trLab">TODAY, HOURLY</small><span class="r"><span class="pill" id="trD">+2.1 pts</span></span></div><div id="chart"></div>
+      <p class="note" style="margin-top:6px">Coaching on "Show actual costs before the offer" started 10:00. Sample data.</p></section>
+    <section class="card"><div class="card-h"><h3>Coverage</h3><span class="r"><div class="seg" id="covSeg"><button data-m="0">Manual sample</button><button data-m="1" aria-pressed="true">ASCULTA AI</button></div></span></div>
+      <div class="dots ai" id="dots"></div><p style="font-weight:700" id="covTx"></p><p class="note" style="margin-top:4px">Each dot is about 40 conversations today. Red dots carried a risk signal.</p></section>
+  </div>
+
+  <div class="low-g">
+    <section class="card"><div class="card-h"><h3>Agent performance</h3><small>Coaching score</small><span class="r"><a class="btn sm gh" href="agents.html">All</a></span></div><div id="agents"></div></section>
+    <section class="card"><div class="card-h"><h3>Risk alerts</h3><small>Newest first</small><span class="r"><a class="btn sm gh" href="risks.html">Queue</a></span></div><div class="list" id="risks"></div></section>
+    <section class="card tech"><span class="pill ok">Top technique this week</span><h3>Show actual costs before the offer</h3>
+      <p class="muted" style="margin-top:8px;font-size:14.5px">Learned from Maya Cohen's calls, now coached to the whole retention desk.</p>
+      <div class="tag-q" style="margin-top:14px">"Here is what you actually paid last year."</div>
+      <div style="display:flex;gap:18px;margin-top:16px"><div><div class="mono faint" style="font-size:10.5px">LIFT</div><b style="font-family:var(--display);font-size:26px;color:var(--accent-tx)">+2.1 pts</b></div><div><div class="mono faint" style="font-size:10.5px">USED IN</div><b style="font-family:var(--display);font-size:26px">184 calls</b></div></div>
+      <a class="btn sm pri" href="coaching.html" style="margin-top:16px">Open the playbook</a></section>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;
+$('#today').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short',year:'numeric'}).toUpperCase();
+$$('.card-h .btn').forEach(b=>b.innerHTML=b.innerHTML.replace('${arrow}',I.arrow));
+X.wave($('#liveWave'),70);
+/* KPIs */
+function kpis(r){const k=X.kpis[r],open=X.openRisks().length;const risks=r==='today'?open:k.risks;
+ $('#kpis').innerHTML=[['Conversations analyzed',k.conv,'100% coverage',''],['Conversion rate',k.cr,k.crd+' vs last period','',v=>v.toFixed(1)+'%'],['Coaching tips delivered',k.tips,k.applied+'% applied by agents',''],['Open risk alerts',risks,r==='today'?(X.openRisks().filter(x=>x.sev==='High').length+' high severity'):'across the period','rk'],['Lead value recovered',0,'estimate · sample data','']]
+ .map(([l,v,s,c,f],i)=>`<div class="kpi ${c} fade" style="animation-delay:${i*60}ms"><label>${l}</label><strong data-v="${v}" data-i="${i}">${i===4?k.val:'0'}</strong><small>${s}</small></div>`).join('');
+ $$('#kpis strong').forEach(e=>{const i=+e.dataset.i;if(i===4)return;X.count(e,+e.dataset.v,{fmt:i===1?v=>v.toFixed(1)+'%':undefined})});
+ const lab={today:['08','','10','','12','','14','','16',''],'7d':['Wed','Thu','Fri','Sat','Sun','Mon','Tue'],'30d':['','Oct 22','','','Oct 31','','','Nov 8','','','','Nov 17']}[r];
+ X.lineChart($('#chart'),X.trend[r],lab);$('#trLab').textContent={today:'TODAY, HOURLY','7d':'LAST 7 DAYS','30d':'LAST 30 DAYS'}[r];$('#trD').textContent=k.crd;
+ $('#briefWhen').textContent=k.label.toUpperCase()+(r==='today'?' · 14:05':'');
+ $('#briefTx').innerHTML=r==='today'?`<em>1,284 conversations</em> analyzed, all of them. Retention conversion is <em>up 2.1 points</em> since Maya's technique was coached to the desk. ${open?`<u>${X.openRisks().some(x=>x.sev==='High')?'A high-severity risk':'An open risk'}</u> on the sales desk needs you now.`:'Every risk alert from today has been handled.'}`
+  :r==='7d'?`<em>8,902 conversations</em> this week. The retention desk improved for five days in a row. <u>Tom and Lior</u> carry most of the week's compliance alerts: coaching on risk wording is the fastest win.`
+  :`<em>37,415 conversations</em> in 30 days. Conversion climbed <em>0.9 points</em> as top-performer techniques spread. Compliance alerts fell 31% after the risk-wording coaching started.`}
+$$('#range button').forEach(b=>b.onclick=()=>{$$('#range button').forEach(x=>x.setAttribute('aria-pressed',x===b));kpis(b.dataset.r)});
+kpis('today');
+/* agents */
+$('#agents').innerHTML=X.agents.map(a=>`<div class="agr" data-a="${a.id}"><b>${a.name}</b><div class="bar ${a.score<65?'lo':''}"><i style="width:0" data-w="${a.score}"></i></div><output>${a.score}</output></div>`).join('');
+setTimeout(()=>$$('#agents .bar i').forEach(i=>i.style.width=i.dataset.w+'%'),120);
+$$('#agents .agr').forEach(r=>r.onclick=()=>X.agentDrawer(r.dataset.a));
+/* risks */
+function risks(){$('#risks').innerHTML=X.risks.map(r=>{const a=X.A[r.agent],h=X.handled().includes(r.id);return `<div class="row" data-r="${r.id}" style="cursor:pointer">${X.av(a)}<div style="min-width:0"><b>${r.title}</b><small>${a.name} · ${a.desk} · ${r.at}</small></div><span class="end">${h?'<span class="pill ok">Handled</span>':X.sevPill(r.sev)}</span></div>`}).join('');
+ $$('#risks .row').forEach(e=>e.onclick=()=>X.reviewRisk(e.dataset.r,()=>{risks();kpis($('#range [aria-pressed=true]').dataset.r)}))}
+risks();
+$('#bReview').onclick=()=>{const r=X.openRisks().find(x=>x.sev==='High')||X.openRisks()[0];if(r)X.reviewRisk(r.id,()=>{risks();kpis('today')});else X.toast({title:'Nothing open',text:'Every risk alert from today is handled.'})};
+/* coverage dots */
+const S=[7,19,33,48,61,77,90,104,118,131,147,160,174],R=[12,40,66,99,133,151,170];
+$('#dots').innerHTML=Array.from({length:180},(_,k)=>`<i class="${S.includes(k)?'s ':''}${R.includes(k)?'rk':''}"></i>`).join('');
+function cov(m){$('#dots').classList.toggle('ai',!!m);$$('#covSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.m===m));$('#covTx').innerHTML=m?'1,284 of 1,284 conversations analyzed. <span style="color:var(--risk-tx)">7 risk signals surfaced.</span>':'A manager samples about 40 calls a day: 3%. <span style="color:var(--risk-tx)">1 of 7 risk signals heard.</span>'}
+$$('#covSeg button').forEach(b=>b.onclick=()=>cov(+b.dataset.m));cov(1);
+/* live feed */
+const EV=[['tip','Tip delivered to Noa','"Show actual costs first"'],['obj','Objection captured','Maya · "the new pricing doesn\'t work"'],['pref','Preference saved','Shira · customer prefers email'],['int','Intent detected','Eli · lead is comparing providers'],['tip','Tip applied','Avi booked the next step on the call'],['need','Need captured','Dana · "pay less each month"']];
+let ei=0;const feed=$('#feed');function push(){const e=EV[ei++%EV.length];const d=document.createElement('div');d.className='row';d.innerHTML=`<i class="dot ${e[0]==='obj'?'a':''}"></i><div><b style="font-size:13px">${e[1]}</b><small>${e[2]}</small></div><span class="end mono faint" style="font-size:10.5px">now</span>`;feed.prepend(d);[...feed.children].slice(3).forEach(x=>x.remove())}
+push();push();push();setInterval(push,3200);
+/* demo actions */
+X.act('review',()=>$('#bReview').click());X.act('range',v=>$(`#range [data-r="${v}"]`).click());X.act('cov',v=>cov(+v));X.act('agent',v=>X.agentDrawer(v||'tom'));X.act('ask',()=>X.palette(true));X.act('close',()=>X.closeDrawer());
+})();
+</script>
+</body>
+</html>

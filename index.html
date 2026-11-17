@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASCULTA AI · Every conversation, heard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+body{background:var(--navy-deep);color:#fff;overflow-x:hidden}
+.wrap{width:min(1200px,100% - 48px);margin-inline:auto}
+.lnav{position:fixed;inset:0 0 auto;z-index:50;height:68px;display:flex;align-items:center;background:rgba(7,21,46,.72);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}
+.lnav .wrap{display:flex;align-items:center;gap:26px}
+.lnav .links{display:flex;gap:4px;margin-left:auto}
+.lnav .links a{font-size:13.5px;font-weight:700;color:#A9BAD6;padding:8px 12px;border-radius:99px}
+.lnav .links a:hover{color:#fff}
+.hero{min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:110px 0 120px;overflow:hidden;background:radial-gradient(100% 70% at 70% 10%,#15346A 0%,#0B1E3F 50%,#07152E 100%)}
+#cv{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero h1{font-size:clamp(48px,7.2vw,112px);font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hero h1 span{color:var(--teal);display:block}
+.hero .lede{font-size:clamp(17px,1.6vw,21px);color:#A9BAD6;max-width:50ch;margin-top:26px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.cta .btn{font-size:15px;padding:14px 22px}
+.btn.gl{border-color:rgba(255,255,255,.28);color:#fff}
+.btn.gl:hover{border-color:#fff}
+.orb{position:relative;aspect-ratio:1;width:min(460px,100%);margin-inline:auto}
+.orb .core{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3BE0D1,#0E8F84 55%,#0B3B5C);box-shadow:0 0 90px rgba(46,196,182,.45),inset 0 0 40px rgba(255,255,255,.2);display:grid;place-items:center}
+.orb .core .wave{height:34%;width:52%}
+.orb .core .wave i{background:#07152E}
+.orb .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(46,196,182,.25);animation:ring 4s linear infinite}
+.orb .ring:nth-child(2){inset:9%;animation-delay:-1.3s}.orb .ring:nth-child(3){inset:18%;animation-delay:-2.6s}
+@keyframes ring{0%{transform:scale(.86);opacity:0}30%{opacity:1}100%{transform:scale(1.08);opacity:0}}
+.ftag{position:absolute;display:flex;flex-direction:column;gap:4px;opacity:0;animation:ft 9s infinite;animation-delay:var(--dl)}
+.ftag small{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#A9BAD6}
+.ftag b{background:#fff;color:var(--navy);font-size:14px;padding:8px 12px;border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.35);white-space:nowrap}
+.ftag.r b{background:var(--risk);color:#fff}.ftag.t b{background:var(--teal);color:var(--navy-deep)}
+@keyframes ft{0%{opacity:0;transform:translateY(10px)}6%,30%{opacity:1;transform:none}36%,100%{opacity:0;transform:translateY(-8px)}}
+.ticker{position:absolute;left:0;right:0;bottom:0;z-index:2;background:rgba(7,21,46,.6);border-block:1px solid rgba(255,255,255,.08);overflow:hidden;white-space:nowrap;padding:12px 0;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#7488AB}
+.ticker div{display:inline-block;animation:tk 40s linear infinite}
+.ticker span{margin-right:36px}.ticker span b{color:var(--teal);font-weight:700}.ticker span b.r{color:#FF8A91}
+@keyframes tk{to{transform:translateX(-50%)}}
+.sec{padding:clamp(80px,12vh,130px) 0;position:relative}
+.sec h2{font-size:clamp(34px,4.6vw,60px);max-width:20ch;letter-spacing:-.03em}
+.sec .lede{color:#A9BAD6;font-size:clamp(17px,1.5vw,20px);max-width:60ch;margin-top:16px}
+.light{background:#F3F7FB;color:var(--navy)}
+.light .lede{color:#4C5D7A}
+.light .eyebrow{color:var(--teal-ink)}
+/* hear the difference */
+.hear{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;margin-top:44px;align-items:stretch}
+.hear-c{background:var(--navy);color:#fff;border-radius:22px;padding:24px;position:relative;overflow:hidden}
+.hear-c .ln .bub{background:#10274F}.hear-c .ln.ag .bub{background:#16305E}
+.hear-c .ln .who{color:#7488AB}
+.hear-c.blur .bub{filter:blur(5px);opacity:.6}
+.hear-c.blur .bub mark{background:none;color:inherit}
+.hear-c.blur .chips{opacity:0}
+.hear-c .chips{transition:opacity .4s}
+.hear-c .bub{transition:filter .6s,opacity .6s}
+.hear-side{display:flex;flex-direction:column;gap:14px}
+.hs{background:#fff;border-radius:18px;padding:20px 22px;box-shadow:0 10px 30px rgba(11,30,63,.07);display:flex;gap:16px;align-items:flex-start;opacity:.35;transition:opacity .4s,transform .4s}
+.hs.on{opacity:1;transform:translateX(-4px)}
+.hs .ic{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--navy);color:var(--teal)}
+.hs .ic svg{width:20px;height:20px}
+.hs b{font-family:var(--display);font-size:19px;display:block}
+.hs p{font-size:15px;color:#4C5D7A;margin-top:2px}
+.tg2{display:inline-flex;background:#fff;border-radius:99px;padding:4px;box-shadow:inset 0 0 0 1px #DCE5F0;margin-top:24px}
+.tg2 button{font-size:14px;font-weight:900;padding:9px 18px;border-radius:99px;color:#4C5D7A}
+.tg2 button[aria-pressed=true]{background:var(--navy);color:#fff}
+/* capabilities */
+.caps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}
+.capc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;transition:background .2s,transform .2s,border-color .2s;min-height:300px}
+.capc:hover{background:rgba(255,255,255,.07);transform:translateY(-4px);border-color:rgba(46,196,182,.5)}
+.capc .ic{width:50px;height:50px;border-radius:14px;background:var(--teal);color:var(--navy-deep);display:grid;place-items:center}
+.capc .ic svg{width:24px;height:24px}
+.capc h3{font-size:22px;margin-top:8px}
+.capc p{color:#A9BAD6;font-size:15px}
+.capc .go{margin-top:auto;display:flex;align-items:center;gap:8px;font-weight:900;color:var(--teal);font-size:14px}
+/* video */
+.vid{margin-top:40px;border-radius:22px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08);background:#000;aspect-ratio:16/9}
+.vid video{width:100%;height:100%;display:block}
+.ends{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+.endc{background:#fff;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 30px rgba(11,30,63,.07);transition:transform .2s}
+.endc:hover{transform:translateY(-3px)}
+.endc b{font-family:var(--display);font-size:20px}
+.endc p{color:#4C5D7A;font-size:14.5px}
+.endc span{margin-top:auto;font-weight:900;color:var(--teal-ink);font-size:14px}
+footer{padding:28px 0 36px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:#7488AB;text-transform:uppercase}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0)*80ms)}
+.in .rv{opacity:1;transform:none}
+@media(max-width:980px){.hero .wrap,.hear{grid-template-columns:1fr}.orb{width:min(320px,80%)}.caps{grid-template-columns:1fr 1fr}.ends{grid-template-columns:1fr}.lnav .links{display:none}}
+@media(max-width:600px){.lnav .brand-tx small,.lnav .btn.gl{display:none}.caps{grid-template-columns:1fr}.ftag b{font-size:12px}}
+</style>
+</head>
+<body>
+<header class="lnav"><div class="wrap">
+  <a class="brand" href="index.html" style="padding:0"><span class="brand-mk"></span><span class="brand-tx">ASCULTA <b>AI</b><small>CONVERSATION INTELLIGENCE</small></span></a>
+  <nav class="links"><a href="#hear">Hear the difference</a><a href="#platform">Platform</a><a href="#video">Video</a><a href="briefing.html">Executive briefing</a></nav>
+  <a class="btn gl sm" href="login.html" style="margin-left:0">Sign in</a><a class="btn pri sm" href="pilot.html" id="pilotTop">Free pilot week</a>
+</div></header>
+
+<section class="hero" id="top">
+  <canvas id="cv" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Listen · understand · act</p>
+      <h1>Every conversation,<span>heard.</span></h1>
+      <p class="lede">ASCULTA AI listens to every sales and retention call, coaches each agent like your best one, and alerts managers the moment a conversation turns risky. Get maximum value from every lead.</p>
+      <div class="cta"><a class="btn pri" href="login.html">Enter the platform →</a><a class="btn gl" href="#video">${play} Watch the 53-second video</a></div>
+    </div>
+    <div class="orb" aria-hidden="true">
+      <i class="ring"></i><i class="ring"></i><i class="ring"></i>
+      <div class="core"><div class="wave" id="orbWave"></div></div>
+      <div class="ftag" style="left:-14%;top:12%;--dl:0s"><small>CUSTOMER SAID</small><b>"The fees are too high"</b></div>
+      <div class="ftag t" style="right:-10%;top:30%;--dl:3s"><small>COACHING TIP</small><b>Show actual costs first</b></div>
+      <div class="ftag r" style="left:-4%;bottom:12%;--dl:6s"><small>RISK DETECTED</small><b>"Basically guaranteed profit"</b></div>
+    </div>
+  </div>
+  <div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+</section>
+
+<section class="sec light" id="hear" data-sec>
+  <div class="wrap">
+    <p class="eyebrow rv">Hear the difference</p>
+    <h2 class="rv" style="--i:1">This call looked fine. It wasn't.</h2>
+    <p class="lede rv" style="--i:2">A manager can review a handful of calls a day. The rest go unheard: the objection, the customer's preference, the promise that should never have been made.</p>
+    <div class="tg2 rv" style="--i:3" id="tg"><button data-m="0" aria-pressed="true">What a manager hears</button><button data-m="1">What ASCULTA AI hears</button></div>
+    <div class="hear">
+      <div class="hear-c blur rv" style="--i:4" id="hc"><div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><span class="av" style="background:#16305E;color:#fff">TH</span><div><b>Sales desk · Tom</b><div class="mono" style="font-size:11px;color:#7488AB">CALL 214 OF 1,284 · NOT SAMPLED</div></div><span class="pill rk solid" id="hcPill" style="margin-left:auto;opacity:0;transition:opacity .4s">Risk flagged</span></div><div class="tx" id="hcTx"></div></div>
+      <div class="hear-side">
+        <div class="hs rv" style="--i:5" data-k="1"><span class="ic">${coach}</span><div><b>The objection is captured</b><p>"Could I lose money?" is saved to the customer profile for the next call.</p></div></div>
+        <div class="hs rv" style="--i:6" data-k="2"><span class="ic" style="background:var(--risk);color:#fff">${risk}</span><div><b>The risk is flagged live</b><p>"Basically guaranteed profit" is caught at 06:41, and the manager is notified during the call.</p></div></div>
+        <div class="hs rv" style="--i:7" data-k="3"><span class="ic">${cust}</span><div><b>The follow-up is ready</b><p>The callback opens with the approved risk wording, before any sign-up.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="platform" data-sec style="background:var(--navy)">
+  <div class="wrap">
+    <p class="eyebrow rv">The platform</p>
+    <h2 class="rv" style="--i:1">Four capabilities. One place to act.</h2>
+    <p class="lede rv" style="--i:2">Each card opens the live demo on that screen. Sign in as a manager, a team lead or an agent to see what each one gets.</p>
+    <div class="caps">
+      <a class="capc rv" style="--i:3" href="coaching.html" data-role="manager"><span class="ic">${coach}</span><h3>Top-performer coaching</h3><p>Learns from your highest-revenue agents and turns their winning techniques into tips for every agent.</p><span class="go">Open the playbook →</span></a>
+      <a class="capc rv" style="--i:4" href="conversations.html" data-role="manager"><span class="ic">${conv}</span><h3>100% conversation coverage</h3><p>Every customer conversation is analyzed, not a selected sample.</p><span class="go">See every conversation →</span></a>
+      <a class="capc rv" style="--i:5" href="customers.html" data-role="manager"><span class="ic">${cust}</span><h3>Customer profiling &amp; continuity</h3><p>Needs, preferences, objections and history, ready before the next interaction.</p><span class="go">Open a profile →</span></a>
+      <a class="capc rv" style="--i:6" href="risks.html" data-role="manager"><span class="ic">${risk}</span><h3>Real-time risk detection</h3><p>Red flags, compliance violations and misleading promises, with managers alerted to act.</p><span class="go">Review a risk alert →</span></a>
+    </div>
+    <div class="cta rv" style="--i:7;margin-top:28px"><a class="btn pri" href="login.html">Sign in to the demo</a><a class="btn gl" href="agent-live.html" data-role="agent">See the agent's live call screen</a></div>
+  </div>
+</section>
+
+<section class="sec" id="video" data-sec style="background:var(--navy-deep)">
+  <div class="wrap">
+    <p class="eyebrow rv">See it in 53 seconds</p>
+    <h2 class="rv" style="--i:1">From first word to manager action.</h2>
+    <div class="vid rv" style="--i:2"><video src="assets/asculta-sample-video.mp4" poster="assets/video-poster.jpg" controls playsinline preload="metadata"></video></div>
+  </div>
+</section>
+
+<section class="sec light" data-sec>
+  <div class="wrap">
+    <p class="eyebrow rv">Next step</p>
+    <h2 class="rv" style="--i:1">A free 1-week pilot in your own call center.</h2>
+    <p class="lede rv" style="--i:2">Day 1 kick-off and setup. Days 2 to 6 live analysis of your real conversations. Day 7 results review, with a clear decision point.</p>
+    <div class="ends">
+      <a class="endc rv" style="--i:3" href="pilot.html" data-role="manager"><b>Plan the pilot week</b><p>Pick a start date and a technical contact. See your week.</p><span>Open the pilot plan →</span></a>
+      <a class="endc rv" style="--i:4" href="briefing.html"><b>Executive briefing</b><p>The interactive briefing for technology leaders, with the 75-second walkthrough.</p><span>Read the briefing →</span></a>
+      <a class="endc rv" style="--i:5" href="presentation.html"><b>The presentation</b><p>Every screen of the platform, running live inside the slides.</p><span>Open the presentation →</span></a>
+    </div>
+  </div>
+</section>
+<footer style="background:#F3F7FB;color:#7488AB"><div class="wrap" style="display:flex;gap:20px;flex-wrap:wrap"><span>ASCULTA AI · Conversation intelligence</span><span style="margin-left:auto">Design demo · sample data</span><a href="assets/ASCULTA_AI_CTO_Briefing.pptx">CTO briefing (.pptx)</a></div></footer>
+<script src="assets/data.js"></script><script src="assets/app.js"></script>
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;
+const svg=(k,s=24)=>I[k].replace('<svg',`<svg width="${s}" height="${s}"`);
+document.body.innerHTML=document.body.innerHTML.replaceAll('${coach}',svg('coach')).replaceAll('${risk}',svg('risk')).replaceAll('${cust}',svg('cust')).replaceAll('${conv}',svg('conv')).replaceAll('${play}',I.play);
+$('.brand-mk').innerHTML=I.logo;X.wave($('#orbWave'),9);
+// role-aware deep links: a card pre-selects the role it needs
+$$('[data-role]').forEach(a=>a.addEventListener('click',()=>{const need=a.dataset.role,r=X.role();if(need==='agent'&&r!=='agent')X.store.set('asc-role','agent');if(need==='manager'&&r==='agent')X.store.set('asc-role','manager')}));
+$('#pilotTop').addEventListener('click',()=>{if(X.role()!=='manager')X.store.set('asc-role','manager')});
+// ticker
+const T=[['OBJECTION','"fees are too high"'],['TIP APPLIED','actual costs shown first'],['RISK','"guaranteed profit" · manager notified','r'],['PREFERENCE','email follow-up'],['CONVERTED','C-60311 upgraded'],['NEED','lower monthly costs'],['RISK','"no risk at all" · flagged','r'],['NEXT STEP','callback Thu 16:00'],['COVERAGE','1,284 of 1,284 analyzed']];
+const h=T.map(t=>`<span><b class="${t[2]||''}">${t[0]}</b> ${t[1]}</span>`).join('');$('#tick').innerHTML=h+h;
+// hear the difference
+const L=X.C.c2.lines;$('#hcTx').innerHTML=L.map(l=>`<div class="ln ${l[1]==='a'?'ag':''}"><div class="who">${l[1]==='a'?'Agent':'Customer'}<time>${X.mmss(l[0])}</time></div><div><div class="bub">${X.marks(l[2])}</div>${X.kinds(l[2]).length?`<div class="chips">${X.kinds(l[2]).map(k=>`<span class="pill ${k==='rk'?'rk solid':k==='obj'?'am':'vi'}">${X.KIND[k][0]}</span>`).join('')}</div>`:''}</div></div>`).join('');
+let hm=0,ht;function hear(m){hm=m;$$('#tg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.m===m));$('#hc').classList.toggle('blur',!m);$('#hcPill').style.opacity=m;clearTimeout(ht);$$('.hs').forEach(e=>e.classList.remove('on'));if(m){let k=1;(function n(){const e=$(`.hs[data-k="${k}"]`);if(!e)return;e.classList.add('on');k++;ht=setTimeout(n,500)})()}}
+$$('#tg button').forEach(b=>b.onclick=()=>hear(+b.dataset.m));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.id==='hear'&&!hm)setTimeout(()=>hear(1),1600)}}),{threshold:.18});$$('[data-sec]').forEach(s=>io.observe(s));
+// hero canvas: listening field that reacts to the pointer
+const cv=$('#cv'),cx=cv.getContext('2d');let W,H,px=-999,py=-999;function sz(){const d=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)}sz();addEventListener('resize',sz);
+$('#top').addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();px=e.clientX-r.left;py=e.clientY-r.top});
+let on=true;new IntersectionObserver(e=>{on=e[0].isIntersecting;if(on)requestAnimationFrame(draw)}).observe(cv);
+function draw(n){if(!on)return;const t=n/1000;cx.clearRect(0,0,W,H);const gap=W<700?8:11,cols=Math.ceil(W/gap),mid=H*.85;
+ for(let i=0;i<cols;i++){const x=i*gap;const e=Math.abs(Math.sin(i*.12+t*1.3)*Math.sin(i*.041-t*.7))*.8+Math.abs(Math.sin(i*.6+t*3))*.2;const b=Math.exp(-Math.pow((x-px)/160,2))*(py>H*.4?1:.5);const h=Math.max(2,H*.11*e+b*H*.08);
+  const rk=Math.exp(-Math.pow((x-W*.62)/(W*.08),2))*(Math.sin(t*.7)>.6?1:0);
+  cx.fillStyle=rk>.05?`rgba(240,80,90,${.25+.6*rk})`:`rgba(46,196,182,${(.18+.55*Math.min(1,e+b)).toFixed(2)})`;cx.fillRect(x,mid-h/2,3,h)}
+ requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+X.act('hear',v=>{$('#hear').scrollIntoView({behavior:'smooth'});setTimeout(()=>hear(v===undefined?1:+v),500)});X.act('video',()=>{$('#video').scrollIntoView({behavior:'smooth'});setTimeout(()=>{const v=$('video');v.muted=true;v.play().catch(()=>{})},700)});X.act('platform',()=>$('#platform').scrollIntoView({behavior:'smooth'}));X.act('top',()=>scrollTo({top:0,behavior:'smooth'}));
+})();
+</script>
+</body>
+</html>

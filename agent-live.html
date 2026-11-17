@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live call · ASCULTA AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232EC4B6'/%3E%3Cpath d='M5 10.5v3M8.5 7v10M12 4.5v15M15.5 8v8M19 10.5v3' stroke='%2307152E' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem('asc-theme'))||'dark'}catch(e){}</script>
+<style>
+.al{display:grid;grid-template-columns:300px minmax(0,1fr) 300px;gap:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:14px}
+.callh{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.callh .clk{font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.ctl{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.ctl .btn.on{background:var(--surf-3)}
+.st{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx-3)}
+.tip{border:1.5px solid var(--teal);background:linear-gradient(150deg,rgba(46,196,182,.16),var(--surf));border-radius:18px;padding:18px 20px;display:none;animation:fadeup .4s both}
+.tip.on{display:block}
+.tip.rk{border-color:var(--risk);background:linear-gradient(150deg,rgba(240,80,90,.16),var(--surf))}
+.tip h3{font-size:21px;line-height:1.25;margin-top:8px}
+.tsteps{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.ts{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px;color:var(--tx-2)}
+.ts .bx{width:20px;height:20px;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;flex:none;transition:all .3s}
+.ts.on{color:var(--tx)}.ts.on .bx{background:var(--teal);border-color:var(--teal);color:var(--navy-deep)}
+.txl{max-height:46vh;overflow-y:auto;padding-right:6px;min-height:240px}
+.cap .row{padding:8px 0;border-radius:0;animation:fadeup .4s both}
+.guard{display:flex;flex-direction:column;gap:6px}
+.guard span{font-size:13px;color:var(--tx-2);display:flex;gap:8px;align-items:center}
+.wrap-up{display:none}
+.wrap-up.on{display:flex;flex-direction:column;gap:14px}
+.wrap-up textarea{min-height:110px;resize:vertical}
+.oc{display:flex;gap:6px;flex-wrap:wrap}
+.oc button{font-size:13px;font-weight:900;padding:8px 14px;border-radius:99px;border:1.5px solid var(--line-2)}
+.oc button[aria-pressed=true]{background:var(--teal);color:var(--navy-deep);border-color:var(--teal)}
+.idle{text-align:center;padding:40px 20px}
+.idle .orbx{width:120px;height:120px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle at 40% 35%,#3BE0D1,#0E8F84 60%,#0B3B5C);display:grid;place-items:center;box-shadow:0 0 60px rgba(46,196,182,.35)}
+.idle .orbx .wave i{background:#07152E}
+@media(max-width:1280px){.al{grid-template-columns:260px minmax(0,1fr)}.al>.col:last-child{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.al{grid-template-columns:1fr}.al>.col:last-child{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="agent-live" data-crumb="Live call">
+<main>
+<div class="page">
+  <div class="al">
+    <div class="col">
+      <section class="card"><span class="eyebrow">Customer</span><h2 style="font-size:28px;margin-top:4px">C-63390</h2><p class="note">Retention · since 2021 · 3 earlier calls</p>
+        <div class="brief" style="padding:14px 16px;margin-top:12px"><span class="pill">Before you speak</span><p style="font-size:14.5px;margin-top:8px;font-weight:700">Last call: the new pricing doesn't work for them. Prefers email in the mornings. Acknowledge, then show actual costs.</p></div></section>
+      <section class="card cap"><div class="card-h"><h3>Profile</h3><small>Updates live</small></div><div id="prof"></div></section>
+      <section class="card"><div class="card-h"><h3>History</h3></div><div class="list">
+        <div class="row" style="padding:6px 0"><div><b style="font-size:13px">Last week · Retention</b><small>Pricing objection, no decision</small></div></div>
+        <div class="row" style="padding:6px 0"><div><b style="font-size:13px">Aug 2026 · Billing</b><small>Asked about the fee change</small></div></div></div></section>
+    </div>
+    <div class="col">
+      <section class="card">
+        <div class="callh"><div><div class="st" id="st">Ready</div><div class="clk" id="clk">00:00</div></div><div class="wave gy" id="wv" style="flex:1;min-width:120px;height:40px"></div>
+          <div class="ctl" id="ctl"><button class="btn pri" id="bStart">${phone} Start call</button></div></div>
+      </section>
+      <section class="tip" id="tip"></section>
+      <section class="card" id="txC"><div class="card-h"><h3>Conversation</h3><small>Live transcript</small><span class="r"><span class="pill gy" id="spk">Waiting</span></span></div>
+        <div class="tx txl" id="tx"><div class="idle"><div class="orbx"><div class="wave" id="ow" style="width:56px;height:34px"></div></div><b>Ready when you are.</b><p class="note" style="margin-top:4px">Press Start call. ASCULTA listens, captures context and coaches you as the call goes.</p></div></div></section>
+      <section class="card wrap-up" id="wu"><div class="card-h" style="margin:0"><span class="pill ok">Call ended</span><h3>Wrap-up, written for you</h3></div>
+        <textarea class="input" id="sum"></textarea>
+        <div><div class="note" style="margin-bottom:6px">Outcome</div><div class="oc" id="oc"><button aria-pressed="true">Retained</button><button>Follow-up</button><button>Converted</button><button>Lost</button></div></div>
+        <div><div class="note" style="margin-bottom:6px">Next step</div><input class="input" id="nx" value="Email the plan comparison this morning. Check in after the first statement."></div>
+        <div style="display:flex;gap:8px"><button class="btn pri" id="bSave">Save and next call</button><button class="btn gh" id="bAgain">Run the demo again</button></div></section>
+    </div>
+    <div class="col">
+      <section class="card cap"><div class="card-h"><h3>ASCULTA hears</h3><small id="capN">0 captured</small></div><div id="cap"><p class="note">Nothing yet.</p></div></section>
+      <section class="card"><div class="card-h"><h3>Compliance guard</h3><span class="r"><span class="pill">On</span></span></div><div class="guard">
+        <span><i class="dot"></i>No guaranteed prices or returns</span><span><i class="dot"></i>State fees before a plan change</span><span><i class="dot"></i>No same-day pressure</span><span><i class="dot"></i>No card numbers read aloud</span></div></section>
+      <section class="card"><div class="card-h"><h3>Tips on this call</h3></div><div id="tipl"><p class="note">Tips appear here as you get them.</p></div></section>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ui.js"></script>
+
+<script>
+(()=>{const X=ASC,{$,$$,I}=X;const ph=I.phone.replace('<svg','<svg width="15" height="15"');$('#bStart').innerHTML=ph+' Start call';
+X.wave($('#wv'),60,true);X.wave($('#ow'),9);
+/* script: [time, kind, payload] */
+const S=[
+ [1.5,'c','Hi, I got your email about the new pricing. Honestly, [[the new pricing doesn\'t work for me|obj]].'],
+ [4.5,'tip',{h:'Acknowledge the price change first. Then show what they actually paid, before any offer.',src:'From your own top calls, now desk coaching',steps:['Acknowledge the concern','Show the actual costs','Present one fitting offer']}],
+ [7,'a','[[That\'s fair, a price change matters.|s0]] Let me look at your account with you.'],
+ [10.5,'a','[[Over the last year you actually paid 190 dollars|s1]], all charges included.'],
+ [13.5,'c','Oh. I thought it was more. But [[I want to pay less each month|need]].'],
+ [16.5,'a','[[There\'s one plan that brings that to about 130|s2]], with everything you use.'],
+ [19.5,'c','Can you [[promise it won\'t go up again?|obj]]'],
+ [21,'guard',{h:'Careful: don\'t promise future prices.',say:'"The new plan price is fixed for 12 months. I\'ll remind you before anything changes."'}],
+ [24.5,'a','[[The price is fixed for 12 months|ok]], and I\'ll remind you before anything changes.'],
+ [28,'c','Okay, that works. [[Send me the details by email|pref]], I read it in the mornings.'],
+ [31,'a','Of course, I\'ll send it right after this call.'],
+ [33.5,'c','Great. [[Then I\'ll stay|ok]].'],
+ [36,'end']];
+let t=0,run=false,last=0,idx=0,muted=false,hold=false;const caps=[],tips=[];
+const KL={obj:'Objection',need:'Need',pref:'Preference',ok:'Agreed'};
+function ln(w,s){const el=document.createElement('div');el.className='ln '+(w==='a'?'ag':'');const clean=s.replace(/\[\[(.+?)\|s\d\]\]/g,'<mark>$1</mark>');
+ el.innerHTML=`<div class="who">${w==='a'?'You':'Customer'}<time>${X.mmss(t)}</time></div><div><div class="bub">${X.marks(clean)}</div></div>`;$('#tx').append(el);$('#tx').scrollTop=1e5;$('#spk').textContent=w==='a'?'You are speaking':'Customer speaking';$('#spk').className='pill '+(w==='a'?'':'vi')}
+function capture(s){[...s.matchAll(/\[\[(.+?)\|(obj|need|pref|ok)\]\]/g)].forEach(m=>{caps.push([KL[m[2]],m[1].replace(/[.?]$/,''),m[2]]);
+ $('#cap').innerHTML=caps.map(c=>`<div class="row"><i class="ck" style="background:${c[2]==='obj'?'var(--amber)':c[2]==='pref'?'var(--violet)':'var(--teal)'}"></i><div><b style="font-size:13.5px">${c[0]}</b><small>${c[1]}</small></div></div>`).join('');$('#capN').textContent=caps.length+' CAPTURED';
+ if(m[2]!=='ok'){const p=$('#prof');p.insertAdjacentHTML('beforeend',`<div class="row"><span class="pill ${m[2]==='obj'?'am':m[2]==='pref'?'vi':''}">${KL[m[2]]}</span><span style="font-size:13.5px">${m[1].replace(/[.?]$/,'')}</span></div>`)}})}
+function tick(s){[...s.matchAll(/\|s(\d)\]\]/g)].forEach(m=>{const e=$$('#tip .ts')[+m[1]];if(e)e.classList.add('on')});if($$('#tip .ts.on').length===3&&!$('#tip').dataset.done){$('#tip').dataset.done=1;$('#tip h3').insertAdjacentHTML('afterend','<p class="note" style="margin-top:6px;color:var(--accent-tx)">✓ Tip applied. The customer\'s tone turned positive.</p>');tips[0][2]=true;tipList()}}
+function tipList(){$('#tipl').innerHTML=tips.map(x=>`<div class="row" style="padding:6px 0;align-items:flex-start"><span class="mono faint" style="font-size:11px;padding-top:2px">${x[0]}</span><div style="flex:1;font-size:13.5px">${x[1]}</div>${x[2]?'<span class="pill ok">Done</span>':''}</div>`).join('')}
+function ev(e){const [_,k,p]=e;
+ if(k==='c'||k==='a'){ln(k,p);capture(p);if(k==='a')tick(p);if(k==='a'&&/fixed for 12/.test(p)&&tips[1]){tips[1][2]=true;tipList();$('#tip').classList.remove('rk');$('#tip').innerHTML='<span class="pill ok">Guard cleared</span><h3>Well handled. Back to the plan.</h3>'}}
+ if(k==='tip'){const el=$('#tip');el.className='tip on';el.dataset.done='';el.innerHTML=`<div style="display:flex;gap:8px;align-items:center"><span class="pill">Coaching tip</span><span class="note">${p.src}</span></div><h3>${p.h}</h3><div class="tsteps">${p.steps.map(s=>`<div class="ts"><span class="bx">${I.check}</span>${s}</div>`).join('')}</div>`;tips.push([X.mmss(t),p.h,false]);tipList()}
+ if(k==='guard'){const el=$('#tip');el.className='tip on rk';el.innerHTML=`<div style="display:flex;gap:8px;align-items:center"><span class="pill rk solid">Compliance guard</span></div><h3>${p.h}</h3><p style="margin-top:8px;font-size:15px">Say: <b>${p.say}</b></p>`;tips.push([X.mmss(t),'Don\'t promise future prices',false]);tipList()}
+ if(k==='end')end()}
+function loop(n){if(!run)return;if(!hold)t+=(n-last)/1000;last=n;$('#clk').textContent=X.mmss(t*6.5);while(idx<S.length&&S[idx][0]<=t){ev(S[idx]);idx++}if(run)requestAnimationFrame(loop)}
+function start(){if(run)return;run=true;$('#tx').innerHTML='';$('#st').textContent='On call · C-63390';$('#wv').className='wave';
+ $('#ctl').innerHTML=`<button class="btn gh" id="bMute">Mute</button><button class="btn gh" id="bHold">Hold</button><button class="btn rk" id="bEnd">End call</button>`;
+ $('#bMute').onclick=e=>{muted=!muted;e.currentTarget.classList.toggle('on',muted);e.currentTarget.textContent=muted?'Unmute':'Mute'};
+ $('#bHold').onclick=e=>{hold=!hold;e.currentTarget.classList.toggle('on',hold);e.currentTarget.textContent=hold?'Resume':'Hold';$('#st').textContent=hold?'On hold':'On call · C-63390'};
+ $('#bEnd').onclick=end;last=performance.now();requestAnimationFrame(loop)}
+function end(){if(!run)return;run=false;$('#st').textContent='Call ended';$('#wv').className='wave gy still';$('#spk').textContent='Ended';$('#spk').className='pill gy';$('#ctl').innerHTML='';$('#tip').classList.remove('on');
+ const got=caps.map(c=>c[1]);$('#sum').value=`Customer called about the new pricing and said it doesn't work for them${got.includes('I want to pay less each month')?', wanting to pay less each month':''}. I acknowledged the change, showed the actual cost over the last year (190 dollars) and offered the plan at about 130. The customer asked for a price promise; I explained the price is fixed for 12 months. ${got.some(g=>/Then I'll stay/.test(g))?'The customer agreed to stay and asked for the details by email.':'No decision yet.'}`;
+ $('#wu').classList.add('on');$('#wu').scrollIntoView({behavior:'smooth',block:'center'})}
+$('#bStart').onclick=start;
+$$('#oc button').forEach(b=>b.onclick=()=>$$('#oc button').forEach(x=>x.setAttribute('aria-pressed',x===b)));
+$('#bSave').onclick=()=>{const m=X.store.get('asc-mycalls',[]);const now=new Date();m.unshift({cust:'C-63390',time:String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'),dur:$('#clk').textContent,outcome:$('#oc [aria-pressed=true]').textContent,summary:$('#sum').value,next:$('#nx').value,tips:tips.map(x=>[x[0],x[1],x[2]]),caps:caps.map(c=>[c[0],c[1]])});X.store.set('asc-mycalls',m.slice(0,5));location.href='agent-calls.html?new=1'};
+$('#bAgain').onclick=()=>location.reload();
+X.act('start',start);X.act('end',end);X.act('fast',()=>{start();t=S[S.length-2][0]-.1});
+})();
+</script>
+</body>
+</html>
